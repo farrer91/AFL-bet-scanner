@@ -1,4 +1,5 @@
 import { BACKTEST } from '../data/backtest.js';
+import { PROP_RECORD } from '../data/propRecord.js';
 import { pct } from '../lib/edges.js';
 
 const signedPct = (v, dp = 1) => `${v > 0 ? '+' : ''}${pct(v, dp)}`;
@@ -167,6 +168,54 @@ export default function TrackRecord() {
           </div>
         </Section>
       </div>
+
+      <Section
+        title="Player props, settled"
+        subtitle="Recorded round by round, since historical prop odds cannot be bought"
+      >
+        {PROP_RECORD.bets ? (
+          <div className="scroll-x">
+            <table className="w-full min-w-[560px] text-sm">
+              <thead>
+                <tr className="border-b border-slate-800 text-[11px] uppercase tracking-wide text-slate-500">
+                  <th className="px-4 py-2 text-left font-medium">Tier</th>
+                  <th className="px-2 py-2 text-right font-medium">Bets</th>
+                  <th className="px-2 py-2 text-right font-medium">Win %</th>
+                  <th className="px-2 py-2 text-right font-medium">Claimed</th>
+                  <th className="px-4 py-2 text-right font-medium">Realised</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PROP_RECORD.byTier.map((t) => (
+                  <tr key={t.key} className="border-b border-slate-800/50 last:border-0">
+                    <td className="px-4 py-2 font-medium text-slate-200">{t.label}</td>
+                    <td className="num px-2 py-2 text-right text-slate-400">{t.bets}</td>
+                    <td className="num px-2 py-2 text-right text-slate-400">{pct(t.winRate, 1)}</td>
+                    <td className="num px-2 py-2 text-right text-slate-500">{signedPct(t.claimedEv)}</td>
+                    <td className={`num px-4 py-2 text-right font-semibold ${tone(t.roi)}`}>
+                      {signedPct(t.roi)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <p className="border-t border-slate-800 px-4 py-3 text-[11px] leading-relaxed text-slate-500">
+              {PROP_RECORD.bets} bets settled across round{PROP_RECORD.rounds.length === 1 ? '' : 's'}{' '}
+              {PROP_RECORD.rounds.join(', ')}. Treat this as provisional until it runs to several
+              hundred bets — the match record needed a thousand before its interval stopped spanning
+              zero.
+            </p>
+          </div>
+        ) : (
+          <p className="px-4 py-6 text-sm leading-relaxed text-slate-500">
+            No settled bets yet. Round{PROP_RECORD.pendingRounds.length === 1 ? '' : 's'}{' '}
+            {PROP_RECORD.pendingRounds.join(', ') || '—'} snapshotted and awaiting results. Each week
+            the pipeline records the prices it showed, then settles them against the game logs once
+            the round is played — buying historical prop odds is not affordable, so the record is
+            earned a round at a time.
+          </p>
+        )}
+      </Section>
 
       <Section
         title="Calibration"

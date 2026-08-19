@@ -61,6 +61,13 @@ jobs:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: node scripts/fetch-odds.js
 
+      # Snapshot this round's prop markets and settle any earlier round whose
+      # results have landed. This is how the prop record accumulates: historical
+      # prop odds cannot be bought affordably, so they are recorded as they go.
+      - name: Snapshot and settle props
+        continue-on-error: true
+        run: node scripts/settle-props.js
+
       # The track record is shown in the UI, so it must not go stale as results
       # land. A failure here must not block the data refresh or the deploy.
       - name: Refresh backtest
@@ -74,7 +81,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git add --force src/data/
+          git add --force src/data/ data/
           if git diff --staged --quiet; then
             echo "No data changes to commit."
           else

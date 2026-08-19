@@ -443,14 +443,19 @@ function buildPlayers(playerRows, matches, named, logs) {
         strike: goalSeries.length >= 5
           ? round(weightedMean(goalSeries.map((g) => (g >= 1 ? 1 : 0))), 4)
           : null,
-        games: goalSeries.length,
         recent: goalSeries.slice(-5),
       },
     };
 
+    // Recent scorelines are shown in the UI only for the stats books actually
+    // quote; carrying them for all nine tripled the payload for no benefit.
+    const SHOW_RECENT = new Set(['disposals', 'marks', 'tackles']);
+    let logged = 0;
+
     for (const [key, seasonMean] of Object.entries(counting)) {
       const vals = series(key);
       const measured = vals.length >= 3;
+      logged = Math.max(logged, vals.length);
       const mean = measured ? weightedMean(vals) : seasonMean;
       // Real game-to-game spread beats a fraction of the mean, but a short
       // series can understate it, so the heuristic acts as a floor.
@@ -459,8 +464,7 @@ function buildPlayers(playerRows, matches, named, logs) {
         mean: round(mean, 2),
         std: round(std, 2),
         seasonMean: round(seasonMean, 2),
-        games: vals.length,
-        recent: vals.slice(-5),
+        ...(SHOW_RECENT.has(key) && vals.length ? { recent: vals.slice(-5) } : {}),
       };
     }
 
@@ -471,6 +475,8 @@ function buildPlayers(playerRows, matches, named, logs) {
       match,
       position: normalisePosition(p.playerPosition),
       gamesPlayed,
+      // One count per player rather than repeated inside every stat.
+      loggedGames: logged,
       named: isNamed,
       timeOnGround: round(num(s.timeOnGroundPercentage), 1),
       stats,

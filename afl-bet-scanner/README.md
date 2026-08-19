@@ -150,12 +150,27 @@ fitted: with only 17 real lines available, every value between 0.7 and 0.9
 flagged the same single market, so tuning it would have meant fitting to one
 case. Revisit once coverage is broader.
 
-### These edges are not validated
+### Earning a prop track record
 
-The six-season backtest covers match markets only. Historical prop odds cost 10x
-credits, so there is nothing to test the props model against. Given the match
-model overstated its edge by ~19 points until it was measured, treat prop edges
-as a shortlist, not a signal. The UI says the same.
+```bash
+npm run settle
+```
+
+The six-season backtest covers match markets only — historical prop odds are not
+affordable to buy. So they are recorded instead: `scripts/settle-props.js`
+snapshots the markets the app is currently showing, and settles any earlier
+round against the per-round game logs once its results land. Every run the
+record gets one round longer.
+
+What is snapshotted is the output of `playerMarkets` — the same lines, prices
+and probabilities the UI displayed — so the record scores what was shown rather
+than a reconstruction. Snapshots live in `data/prop-snapshots.json`, outside
+`src/` so they never reach the bundle; the settled summary is written to
+`src/data/propRecord.js` and shown on the track record tab.
+
+Until that record is substantial, treat prop edges as a shortlist, not a signal.
+The match model needed a thousand bets before its interval stopped spanning zero,
+and it overstated its edge by ~19 points until it was measured.
 
 ## Backtesting
 
