@@ -12,6 +12,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { priceGame, mean } from '../src/lib/model.js';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = path.join(__dirname, '..', 'src', 'data');
 
@@ -19,14 +21,8 @@ const CONTACT = 'AFL-Bet-Edge-Scanner/1.0 (farrer91@gmail.com)';
 const SQUIGGLE = 'https://api.squiggle.com.au/';
 const AFL_API = 'https://api.afl.com.au/cfs/afl';
 
-// Squiggle source ids. 5 = "Punters", i.e. the bookmaker market line, which we
-// treat as the implied-odds baseline rather than as another model.
-const MARKET_SOURCE_ID = 5;
-const SQUIGGLE_SOURCE_ID = 1;
-
 const MAX_PLAYERS = 396;
 const FORM_WINDOW = 8; // rolling window for team averages
-const MARGIN_STD = 27; // historical std of AFL margin vs prediction
 
 // AFL Stats API team names -> Squiggle team names.
 const TEAM_NAME_MAP = {
@@ -211,90 +207,27 @@ function extractPlayerIds(team) {
 // Derived match model
 // ---------------------------------------------------------------------------
 
-const logit = (p) => Math.log(p / (1 - p));
-// Convert a home win probability into a margin using the historical AFL
-// relationship between log-odds and points.
-const probToMargin = (p) => (logit(Math.min(Math.max(p, 0.01), 0.99)) * 27) / 1.7;
-const marginToProb = (m) => 1 / (1 + Math.exp((-m * 1.7) / 27));
-
-const mean = (xs) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0);
-
-// Pool forecast probabilities in logit space. A plain average drags confident
-// forecasts toward 50%, which then contradicts the averaged margin on lopsided
-// games; the log-odds mean keeps the two consistent.
-const poolProbs = (ps) =>
-  ps.length ? 1 / (1 + Math.exp(-mean(ps.map((p) => logit(Math.min(Math.max(p, 0.01), 0.99)))))) : 0.5;
-const stdev = (xs) => {
-  if (xs.length < 2) return 0;
-  const m = mean(xs);
-  return Math.sqrt(mean(xs.map((x) => (x - m) ** 2)));
-};
-
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 function buildMatches(fixtures, tips) {
-  return fixtures.map((game) => {
-    const gameTips = tips.filter((t) => Number(t.gameid) === Number(game.id));
-    const marketTip = gameTips.find((t) => Number(t.sourceid) === MARKET_SOURCE_ID);
-    const modelTips = gameTips.filter((t) => Number(t.sourceid) !== MARKET_SOURCE_ID);
-    const squiggleTip = gameTips.find((t) => Number(t.sourceid) === SQUIGGLE_SOURCE_ID);
+  return fixtures
+    .map((game) => {
+      const priced = priceGame(
+        game,
+        tips.filter((t) => Number(t.gameid) === Number(game.id)),
+      );
+      if (!priced) return null;
 
-    // Each tip's margin is signed towards the tipped team; hmargin is already
-    // oriented to the home side, so prefer it and fall back to the probability.
-    const homeMargin = (t) => {
-      if (t.hmargin != null && t.hmargin !== '') return Number(t.hmargin);
-      if (t.margin != null && t.margin !== '') {
-        const m = Number(t.margin);
-        return Number(t.tipteamid) === Number(t.hteamid) ? m : -m;
-      }
-      return probToMargin(homeProb(t));
-    };
-    const homeProb = (t) => {
-      // hconfidence is already oriented to the home side; confidence is the
-      // tipped team's, so flip it when the tip is against the home team.
-      const h = Number(t.hconfidence) / 100;
-      if (Number.isFinite(h) && h > 0 && h < 1) return h;
-      const c = Number(t.confidence) / 100;
-      if (Number.isFinite(c) && c > 0 && c < 1) {
-        return Number(t.tipteamid) === Number(t.hteamid) ? c : 1 - c;
-      }
-      return marginToProb(Number(t.hmargin) || 0);
-    };
-
-    const modelMargins = modelTips.map(homeMargin).filter(Number.isFinite);
-    const modelProbs = modelTips.map(homeProb).filter(Number.isFinite);
-
-    const predictedMargin = modelMargins.length
-      ? mean(modelMargins)
-      : squiggleTip
-        ? homeMargin(squiggleTip)
-        : 0;
-    const homeWinProb = modelProbs.length ? poolProbs(modelProbs) : marginToProb(predictedMargin);
-
-    const marketMargin = marketTip ? homeMargin(marketTip) : null;
-    const marketProb = marketTip ? homeProb(marketTip) : null;
-
-    const dayIndex = new Date(game.date.replace(' ', 'T')).getDay();
-
-    return {
-      id: game.id,
-      round: game.round,
-      home: game.hteam,
-      away: game.ateam,
-      day: DAYS[dayIndex],
-      date: game.date,
-      venue: game.venue,
-      predictedMargin: round(predictedMargin, 1),
-      // Disagreement between models widens the credible range around the line.
-      std: round(Math.sqrt(MARGIN_STD ** 2 + stdev(modelMargins) ** 2), 1),
-      homeWinProb: round(homeWinProb, 4),
-      marketMargin: marketMargin == null ? null : round(marketMargin, 1),
-      marketProb: marketProb == null ? null : round(marketProb, 4),
-      tipsterCount: modelTips.length,
-      tipsterSpread: round(stdev(modelMargins), 1),
-      squiggleMargin: squiggleTip ? round(homeMargin(squiggleTip), 1) : null,
-    };
-  });
+      return {
+        id: game.id,
+        round: game.round,
+        day: DAYS[new Date(game.date.replace(' ', 'T')).getDay()],
+        date: game.date,
+        venue: game.venue,
+        ...priced,
+      };
+    })
+    .filter(Boolean);
 }
 
 // ---------------------------------------------------------------------------
