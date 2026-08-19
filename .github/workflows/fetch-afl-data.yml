@@ -1,0 +1,70 @@
+name: Fetch AFL data
+
+on:
+  schedule:
+    # Thursday 8am UTC - after Wednesday night team news lands.
+    - cron: '0 8 * * 4'
+    # Friday 2am UTC - picks up late changes once rosters are announced.
+    - cron: '0 2 * * 5'
+  workflow_dispatch:
+    inputs:
+      round:
+        description: 'Round number (blank = auto-detect next round)'
+        required: false
+        type: string
+      year:
+        description: 'Season year (blank = current year)'
+        required: false
+        type: string
+
+concurrency:
+  group: fetch-afl-data
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        working-directory: afl-bet-scanner
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Fetch AFL data
+        run: |
+          mkdir -p src/data
+          node scripts/fetch-afl-data.js \
+            ${{ inputs.round && format('--round {0}', inputs.round) || '' }} \
+            ${{ inputs.year && format('--year {0}', inputs.year) || '' }}
+
+      - name: Build
+        run: npm run build
+
+      - name: Commit data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add --force src/data/
+          if git diff --staged --quiet; then
+            echo "No data changes to commit."
+          else
+            git commit -m "chore: refresh AFL data $(date -u +'%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
+
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: npx vercel --prod --yes --token "$VERCEL_TOKEN"
