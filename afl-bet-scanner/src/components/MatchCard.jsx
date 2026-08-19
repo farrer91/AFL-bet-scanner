@@ -47,7 +47,7 @@ export default function MatchCard({ match, overround }) {
             {match.day} · {match.venue}
           </p>
         </div>
-        {best && <EdgeBadge ev={best.ev} suspect={best.suspect} />}
+        {best && <EdgeBadge ev={best.ev} suspect={best.suspect} tracked />}
       </div>
 
       <div className="space-y-3 px-4 py-3">
@@ -100,7 +100,7 @@ export default function MatchCard({ match, overround }) {
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <span className="num text-sm text-slate-400">${m.odds.toFixed(2)}</span>
-                <EdgeBadge ev={m.ev} suspect={m.suspect} compact />
+                <EdgeBadge ev={m.ev} suspect={m.suspect} compact tracked />
               </div>
             </div>
           ))}

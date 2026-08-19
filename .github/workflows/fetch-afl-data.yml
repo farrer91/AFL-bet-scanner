@@ -47,6 +47,12 @@ jobs:
             ${{ inputs.round && format('--round {0}', inputs.round) || '' }} \
             ${{ inputs.year && format('--year {0}', inputs.year) || '' }}
 
+      # The track record is shown in the UI, so it must not go stale as results
+      # land. A failure here must not block the data refresh or the deploy.
+      - name: Refresh backtest
+        continue-on-error: true
+        run: node scripts/backtest.js --years 2021-$(date -u +'%Y') --write
+
       - name: Build
         run: npm run build
 

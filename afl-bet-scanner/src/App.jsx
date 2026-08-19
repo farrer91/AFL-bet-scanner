@@ -6,11 +6,14 @@ import { matchMarkets, playerMarkets, edgeTier, pct } from './lib/edges.js';
 import MatchCard from './components/MatchCard.jsx';
 import TeamStatsPanel from './components/TeamStatsPanel.jsx';
 import PlayerPropsTable from './components/PlayerPropsTable.jsx';
+import TrackRecord from './components/TrackRecord.jsx';
+import { BACKTEST } from './data/backtest.js';
 
 const TABS = [
   { key: 'matches', label: 'Matches' },
   { key: 'props', label: 'Player props' },
   { key: 'teams', label: 'Team form' },
+  { key: 'record', label: 'Track record' },
 ];
 
 const Stat = ({ label, value, tone = 'text-slate-100' }) => (
@@ -61,6 +64,7 @@ export default function App() {
   );
 
   const generated = new Date(META.generatedAt);
+  const strongTier = BACKTEST.tiers.find((t) => t.key === 'strong') || BACKTEST.tiers[0];
 
   return (
     <div className="min-h-screen bg-slate-950">
@@ -121,12 +125,37 @@ export default function App() {
 
         <main className="space-y-6 pb-16">
           {tab === 'matches' && (
+            <>
+              <button
+                type="button"
+                onClick={() => setTab('record')}
+                className="panel flex w-full items-start gap-3 border-amber-500/20 bg-amber-500/5 px-4 py-3 text-left transition hover:border-amber-500/40"
+              >
+                <span className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-amber-400" />
+                <span className="text-[11px] leading-relaxed text-amber-100/80">
+                  Tested on {BACKTEST.games.toLocaleString()} games ({BACKTEST.seasons[0]}–
+                  {BACKTEST.seasons[BACKTEST.seasons.length - 1]}), edges flagged {strongTier.label}{' '}
+                  returned{' '}
+                  <span className="num font-semibold">
+                    {strongTier.roi > 0 ? '+' : ''}
+                    {pct(strongTier.roi, 1)}
+                  </span>{' '}
+                  against the{' '}
+                  <span className="num">
+                    +{pct(strongTier.claimedEv, 1)}
+                  </span>{' '}
+                  claimed. Use the badges as a ranking, not a forecast — see the track record.
+                </span>
+              </button>
             <div className="grid gap-4 md:grid-cols-2">
               {MATCHES.map((m) => (
                 <MatchCard key={m.id} match={m} overround={overround} />
               ))}
             </div>
+            </>
           )}
+
+          {tab === 'record' && <TrackRecord />}
 
           {tab === 'props' && (
             <PlayerPropsTable
@@ -149,7 +178,11 @@ export default function App() {
               model and market disagree by more than 12 points are flagged rather than ranked, since
               a gap that wide usually means the market has team news the models do not.
             </p>
-            <p className="mt-1">Gamble responsibly. This is a statistical tool, not betting advice.</p>
+            <p className="mt-1">
+              Every claim here is checked against {BACKTEST.games.toLocaleString()} completed games on
+              the track record tab. Gamble responsibly — this is a statistical tool, not betting
+              advice.
+            </p>
           </footer>
         </main>
       </div>

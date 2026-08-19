@@ -3,10 +3,13 @@
  * Backtest the scanner against completed games.
  *
  * Replays every finished match through the same pricing and edge code the app
- * ships, settles each bet against the real result, and reports whether the
+ * ships, settles each bet against the final score, and reports whether the
  * flagged edges actually made money.
  *
- *   node scripts/backtest.js [--years 2021-2026] [--stake 10] [--audit] [--json]
+ *   node scripts/backtest.js [--years 2021-2026] [--stake 10] [--audit] [--write]
+ *
+ * `--write` emits src/data/backtest.js so the app can show its own track
+ * record instead of only its claims.
  *
  * Squiggle stamps a tip's `updated` field when it grades the tip, not when the
  * tip was made, so historical rows carry a post-game timestamp. The margins
@@ -15,11 +18,18 @@
  * check so the assumption can be re-verified against fresh data.
  */
 import axios from 'axios';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { priceGame } from '../src/lib/model.js';
-import { matchMarkets, EDGE_TIERS, edgeTier, pct } from '../src/lib/edges.js';
+import { matchMarkets, EDGE_TIERS, pct } from '../src/lib/edges.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DATA_DIR = path.join(__dirname, '..', 'src', 'data');
 
 const CONTACT = 'AFL-Bet-Edge-Scanner/1.0 (farrer91@gmail.com)';
 const OVERROUND = 1.05;
+const BOOTSTRAP = 20000;
 
 const args = process.argv.slice(2);
 const argValue = (flag) => {
@@ -39,14 +49,14 @@ const YEARS = (() => {
 
 const squiggle = axios.create({
   baseURL: 'https://api.squiggle.com.au/',
-  timeout: 45000,
+  timeout: 60000,
   headers: { 'User-Agent': CONTACT },
   paramsSerializer: { serialize: (p) => p.q },
 });
-
 const get = async (q) => (await squiggle.get('', { params: { q } })).data;
 
 const isComplete = (g) => g.complete === 100 && g.hscore != null && g.ascore != null;
+const round = (n, dp = 4) => Number(n.toFixed(dp));
 
 /**
  * Settle one market against the final score.
@@ -60,42 +70,116 @@ function settle(market, game) {
     if (margin === 0) return null; // draw - both sides push
     return (isHome ? margin > 0 : margin < 0) ? 1 : 0;
   }
-
-  // Line: the selection covers if the margin beats its handicap.
-  const covered = isHome ? margin + market.line > 0 : -margin + market.line > 0;
-  if (isHome ? margin + market.line === 0 : -margin + market.line === 0) return null;
-  return covered ? 1 : 0;
+  const cover = isHome ? margin + market.line : -margin + market.line;
+  if (cover === 0) return null;
+  return cover > 0 ? 1 : 0;
 }
 
-/** Profit from a settled bet, in units of stake. */
 const profit = (result, odds) => (result === null ? 0 : result === 1 ? odds - 1 : -1);
 
 function summarise(bets) {
   const settled = bets.filter((b) => b.result !== null);
   const wins = settled.filter((b) => b.result === 1).length;
   const staked = settled.length * STAKE;
-  const returned = settled.reduce((sum, b) => sum + profit(b.result, b.odds) * STAKE, 0);
-  const expected = settled.reduce((sum, b) => sum + b.ev * STAKE, 0);
+  const returned = settled.reduce((s, b) => s + profit(b.result, b.odds) * STAKE, 0);
+  const expected = settled.reduce((s, b) => s + b.ev * STAKE, 0);
   return {
     bets: settled.length,
     pushes: bets.length - settled.length,
     wins,
-    winRate: settled.length ? wins / settled.length : 0,
-    staked,
-    profit: returned,
-    roi: staked ? returned / staked : 0,
-    expectedRoi: staked ? expected / staked : 0,
+    winRate: settled.length ? round(wins / settled.length) : 0,
+    profit: round(returned, 2),
+    roi: staked ? round(returned / staked) : 0,
+    claimedEv: staked ? round(expected / staked) : 0,
   };
 }
 
-const fmtMoney = (v) => `${v >= 0 ? '+' : '-'}${Math.abs(v).toFixed(2)}`;
-const row = (label, s) =>
-  `  ${label.padEnd(26)} ${String(s.bets).padStart(5)} ${pct(s.winRate, 1).padStart(7)} ` +
-  `${fmtMoney(s.profit).padStart(10)} ${pct(s.roi, 1).padStart(8)} ${pct(s.expectedRoi, 1).padStart(9)}`;
+/** Bootstrap a confidence interval for realised ROI. */
+function bootstrapRoi(bets) {
+  const settled = bets.filter((b) => b.result !== null);
+  if (settled.length < 20) return null;
+  const pls = settled.map((b) => profit(b.result, b.odds));
+  const out = new Array(BOOTSTRAP);
+  for (let i = 0; i < BOOTSTRAP; i += 1) {
+    let sum = 0;
+    for (let j = 0; j < pls.length; j += 1) sum += pls[(Math.random() * pls.length) | 0];
+    out[i] = sum / pls.length;
+  }
+  out.sort((a, b) => a - b);
+  const claimed = settled.reduce((s, b) => s + b.ev, 0) / settled.length;
+  return {
+    low: round(out[Math.floor(0.025 * BOOTSTRAP)]),
+    high: round(out[Math.floor(0.975 * BOOTSTRAP)]),
+    pProfitable: round(out.filter((x) => x > 0).length / BOOTSTRAP),
+    pMeetsClaim: round(out.filter((x) => x >= claimed).length / BOOTSTRAP),
+  };
+}
 
+const CAL_BUCKETS = [
+  [0, 0.2],
+  [0.2, 0.35],
+  [0.35, 0.5],
+  [0.5, 0.65],
+  [0.65, 0.8],
+  [0.8, 1.01],
+];
+
+function calibration(bets) {
+  const out = [];
+  for (const [lo, hi] of CAL_BUCKETS) {
+    const sel = bets.filter(
+      (b) => b.type === 'H2H' && b.modelProb >= lo && b.modelProb < hi && b.result !== null,
+    );
+    if (!sel.length) continue;
+    const predicted = sel.reduce((s, b) => s + b.modelProb, 0) / sel.length;
+    const actual = sel.filter((b) => b.result === 1).length / sel.length;
+    out.push({
+      lo,
+      hi: Math.min(hi, 1),
+      bets: sel.length,
+      predicted: round(predicted),
+      actual: round(actual),
+    });
+  }
+  return out;
+}
+
+/** Head-to-head accuracy of the model against the bookmaker line. */
+function modelVsMarket(rows) {
+  const clamp = (p) => Math.min(Math.max(p, 1e-6), 1 - 1e-6);
+  const logLoss = (key) =>
+    -rows.reduce((s, r) => s + (r.homeWon ? Math.log(clamp(r[key])) : Math.log(1 - clamp(r[key]))), 0) /
+    rows.length;
+  const brier = (key) => rows.reduce((s, r) => s + ((r.homeWon ? 1 : 0) - r[key]) ** 2, 0) / rows.length;
+  const mae = (key) => rows.reduce((s, r) => s + Math.abs(r.actualMargin - r[key]), 0) / rows.length;
+
+  const disagree = rows.filter((r) => Math.abs(r.modelMargin - r.marketMargin) >= 6);
+  const modelRight = disagree.filter(
+    (r) => r.modelMargin > r.marketMargin === r.actualMargin > r.marketMargin,
+  ).length;
+
+  return {
+    games: rows.length,
+    logLoss: { model: round(logLoss('modelProb')), market: round(logLoss('marketProb')) },
+    brier: { model: round(brier('modelProb')), market: round(brier('marketProb')) },
+    marginMae: { model: round(mae('modelMargin'), 2), market: round(mae('marketMargin'), 2) },
+    disagreement: {
+      games: disagree.length,
+      modelCoverRate: disagree.length ? round(modelRight / disagree.length) : 0,
+      breakEven: round(1 / 1.9),
+    },
+  };
+}
+
+// ---------------------------------------------------------------------------
+
+const fmtMoney = (v) => `${v >= 0 ? '+' : '-'}${Math.abs(v).toFixed(2)}`;
 const HEAD =
   `  ${'segment'.padEnd(26)} ${'bets'.padStart(5)} ${'win%'.padStart(7)} ` +
-  `${'profit'.padStart(10)} ${'ROI'.padStart(8)} ${'modelEV'.padStart(9)}`;
+  `${'profit'.padStart(10)} ${'ROI'.padStart(8)} ${'claimed'.padStart(9)}`;
+const line = (label, s) =>
+  `  ${label.padEnd(26)} ${String(s.bets).padStart(5)} ${pct(s.winRate, 1).padStart(7)} ` +
+  `${fmtMoney(s.profit).padStart(10)} ${pct(s.roi, 1).padStart(8)} ${pct(s.claimedEv, 1).padStart(9)}`;
 
 async function main() {
   const label = YEARS.length > 1 ? `${YEARS[0]}-${YEARS[YEARS.length - 1]}` : String(YEARS[0]);
@@ -105,9 +189,8 @@ async function main() {
   const tips = [];
   // Sequential rather than parallel - one polite request at a time.
   for (const year of YEARS) {
-    const [g, t] = [await get(`q=games;year=${year}`), await get(`q=tips;year=${year}`)];
-    games.push(...(g.games || []));
-    tips.push(...(t.tips || []));
+    games.push(...((await get(`q=games;year=${year}`)).games || []));
+    tips.push(...((await get(`q=tips;year=${year}`)).tips || []));
   }
 
   const tipsByGame = new Map();
@@ -121,17 +204,25 @@ async function main() {
 
   const played = games.filter(isComplete);
   const all = [];
+  const rows = [];
   let priced = 0;
-  let skipped = 0;
 
   for (const game of played) {
-    const gameTips = tipsByGame.get(Number(game.id)) || [];
-    const model = priceGame(game, gameTips);
-    if (!model || model.marketProb == null) {
-      skipped += 1;
-      continue;
-    }
+    const model = priceGame(game, tipsByGame.get(Number(game.id)) || []);
+    if (!model || model.marketProb == null) continue;
     priced += 1;
+
+    const actualMargin = game.hscore - game.ascore;
+    if (actualMargin !== 0) {
+      rows.push({
+        modelProb: model.homeWinProb,
+        marketProb: model.marketProb,
+        modelMargin: model.predictedMargin,
+        marketMargin: model.marketMargin,
+        actualMargin,
+        homeWon: actualMargin > 0,
+      });
+    }
 
     for (const market of matchMarkets(model, OVERROUND)) {
       all.push({
@@ -144,73 +235,80 @@ async function main() {
     }
   }
 
-  console.log(`${played.length} completed games, ${priced} with a market line (${skipped} skipped)`);
+  console.log(`${played.length} completed games, ${priced} with a market line`);
   console.log(`${all.length} markets replayed\n`);
 
-  // --- What the scanner would actually have told you to bet -----------------
   const live = all.filter((b) => !b.suspect);
 
   console.log('BETS THE SCANNER WOULD SURFACE (guards applied)');
   console.log(HEAD);
+  const tiers = [];
   for (const tier of EDGE_TIERS) {
     if (tier.key === 'none') continue;
     const sel = live.filter((b) => b.ev >= tier.min);
-    if (sel.length) row0(tier.label + ` (EV >= ${pct(tier.min, 1)})`, sel);
+    if (!sel.length) continue;
+    const summary = summarise(sel);
+    const ci = bootstrapRoi(sel);
+    tiers.push({ key: tier.key, label: tier.label, min: tier.min, ...summary, ci });
+    console.log(line(`${tier.label} (EV >= ${pct(tier.min, 1)})`, summary));
+    if (ci) console.log(`  ${''.padEnd(26)} 95% CI ${pct(ci.low, 1)} to ${pct(ci.high, 1)}`);
   }
-  const flat = live.filter((b) => b.ev > 0);
-  console.log(row('any positive EV', summarise(flat)));
 
-  // --- Do the guards earn their keep? --------------------------------------
   console.log('\nGUARD VALIDATION - markets the scanner suppresses');
   console.log(HEAD);
-  const suppressed = all.filter((b) => b.suspect && b.ev > 0);
-  console.log(row('suppressed, +EV', summarise(suppressed)));
-  const wouldHaveBet = all.filter((b) => b.ev >= 0.05);
-  console.log(row('all +5% EV, no guards', summarise(wouldHaveBet)));
-  console.log(row('  of those, kept', summarise(wouldHaveBet.filter((b) => !b.suspect))));
-  console.log(row('  of those, suppressed', summarise(wouldHaveBet.filter((b) => b.suspect))));
+  const suppressed = summarise(all.filter((b) => b.suspect && b.ev > 0));
+  const kept = summarise(live.filter((b) => b.ev >= 0.05));
+  console.log(line('suppressed, +EV', suppressed));
+  console.log(line('kept, +5% EV', kept));
 
-  // --- Baselines ------------------------------------------------------------
   console.log('\nBASELINES');
   console.log(HEAD);
-  console.log(row('every H2H market', summarise(all.filter((b) => b.type === 'H2H'))));
-  console.log(row('every line market', summarise(all.filter((b) => b.type === 'LINE'))));
-  console.log(
-    row(
-      'back the market favourite',
-      summarise(all.filter((b) => b.type === 'H2H' && b.marketProb > 0.5)),
-    ),
-  );
+  const blindLine = summarise(all.filter((b) => b.type === 'LINE'));
+  const favourites = summarise(all.filter((b) => b.type === 'H2H' && b.marketProb > 0.5));
+  console.log(line('every line market', blindLine));
+  console.log(line('back the market favourite', favourites));
 
-  // --- Calibration ----------------------------------------------------------
+  const cal = calibration(all);
   console.log('\nCALIBRATION - does the model mean what it says?');
   console.log(`  ${'model says'.padEnd(14)} ${'bets'.padStart(5)} ${'predicted'.padStart(10)} ${'actual'.padStart(8)} ${'error'.padStart(8)}`);
-  const buckets = [
-    [0, 0.2],
-    [0.2, 0.35],
-    [0.35, 0.5],
-    [0.5, 0.65],
-    [0.65, 0.8],
-    [0.8, 1.01],
-  ];
-  for (const [lo, hi] of buckets) {
-    const sel = all.filter((b) => b.type === 'H2H' && b.modelProb >= lo && b.modelProb < hi && b.result !== null);
-    if (!sel.length) continue;
-    const predicted = sel.reduce((s, b) => s + b.modelProb, 0) / sel.length;
-    const actual = sel.filter((b) => b.result === 1).length / sel.length;
-    const err = actual - predicted;
+  for (const b of cal) {
+    const err = b.actual - b.predicted;
     console.log(
-      `  ${`${pct(lo, 0)}-${pct(hi > 1 ? 1 : hi, 0)}`.padEnd(14)} ${String(sel.length).padStart(5)} ` +
-        `${pct(predicted, 1).padStart(10)} ${pct(actual, 1).padStart(8)} ${(err >= 0 ? '+' : '') + pct(err, 1).padStart(7)}`,
+      `  ${`${pct(b.lo, 0)}-${pct(b.hi, 0)}`.padEnd(14)} ${String(b.bets).padStart(5)} ` +
+        `${pct(b.predicted, 1).padStart(10)} ${pct(b.actual, 1).padStart(8)} ` +
+        `${((err >= 0 ? '+' : '') + pct(err, 1)).padStart(8)}`,
     );
   }
 
-  function row0(label, sel) {
-    console.log(row(label, summarise(sel)));
-  }
+  const mvm = modelVsMarket(rows);
+  console.log('\nMODEL vs BOOKMAKER LINE');
+  console.log(`  log-loss    model ${mvm.logLoss.model}  market ${mvm.logLoss.market}`);
+  console.log(`  Brier       model ${mvm.brier.model}  market ${mvm.brier.market}`);
+  console.log(`  margin MAE  model ${mvm.marginMae.model}   market ${mvm.marginMae.market}`);
+  console.log(
+    `  when they disagree by 6+ pts (n=${mvm.disagreement.games}): model side covered ${pct(mvm.disagreement.modelCoverRate, 1)}`,
+  );
 
-  if (args.includes('--json')) {
-    console.log(`\n${JSON.stringify({ live: summarise(flat), markets: all.length }, null, 2)}`);
+  if (args.includes('--write')) {
+    const payload = {
+      seasons: YEARS,
+      games: priced,
+      markets: all.length,
+      generatedAt: new Date().toISOString(),
+      tiers,
+      guards: { suppressed, kept },
+      baselines: { blindLine, favourites },
+      calibration: cal,
+      modelVsMarket: mvm,
+    };
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.writeFileSync(
+      path.join(DATA_DIR, 'backtest.js'),
+      `// AUTO-GENERATED by scripts/backtest.js - do not edit by hand.\n` +
+        `// ${YEARS[0]}-${YEARS[YEARS.length - 1]}, ${priced} games, generated ${payload.generatedAt}\n\n` +
+        `export const BACKTEST = ${JSON.stringify(payload, null, 2)};\n\nexport default BACKTEST;\n`,
+    );
+    console.log(`\nWrote src/data/backtest.js (${priced} games, ${all.length} markets)`);
   }
 }
 
@@ -233,8 +331,7 @@ function auditTimestamps(games, tips) {
   }
   console.log('TIMESTAMP AUDIT (completed games)');
   console.log(`  ${shared} games where every tip shares 1-2 timestamps (bulk grading)`);
-  console.log(`  ${individual} games with many distinct timestamps (would suggest edits)`);
-  console.log('');
+  console.log(`  ${individual} games with many distinct timestamps (would suggest edits)\n`);
 }
 
 main().catch((err) => {

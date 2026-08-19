@@ -71,6 +71,42 @@ construction — so the table's output is the **fair price**, not an edge. Set t
 line offset and book price to match a real market and the edge column becomes
 meaningful.
 
+## Backtesting
+
+```bash
+npm run backtest -- --years 2021-2026 --write
+```
+
+Replays every completed game through the same `matchMarkets` code the app ships
+— not a reimplementation — settles each bet against the final score, and writes
+`src/data/backtest.js` for the track record tab. `--audit` re-verifies that
+historical tips are pre-game forecasts.
+
+That check matters: Squiggle stamps a tip's `updated` field when it *grades* the
+tip, so every historical row looks post-game. It isn't leakage — all ~28
+tipsters on a game share one timestamp landing seconds after the final score,
+which is a bulk grading pass. The current round shows the contrast: ungraded,
+with 27 distinct submission times.
+
+### What it found
+
+Over 1,260 games (2021–2026), bets the scanner flagged *Strong* claimed +16.0%
+expected value and returned **−2.8%**. The data rejects the model's own claim at
+p < 0.001.
+
+The cause was under-confidence at the extremes: longshots called at 13.6% won
+6.2%, favourites called at 86.4% won 93.8%. Those errors are what manufactured
+the largest phantom edges. Sharpening the pooled probability in log-odds space
+(`CALIBRATION_K`, fitted by maximum likelihood over 1,247 games) cuts
+calibration error from ±7.5pp to ±1.2pp.
+
+Calibration fixed the probabilities, not profitability — post-fix ROI is −2.5%,
+with a 95% interval of −10.0% to +5.2%. Against the bookmaker line the model
+loses narrowly on log loss, Brier score and margin error. The guards do earn
+their keep: markets they suppress returned 3.2pp worse than those kept.
+
+Treat the edge percentages as a ranking, not a forecast. The app says so too.
+
 ## Deployment
 
 `.github/workflows/fetch-afl-data.yml` refreshes data Thursday 08:00 UTC and
