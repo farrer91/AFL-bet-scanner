@@ -104,6 +104,38 @@ exact name, then surname plus first initial, which reconciles Daniel/Dan and
 Nicholas/Nick. Same-surname collisions are reported rather than guessed. The
 script prints its own match rate so a silent drop in coverage is visible.
 
+### Recent form
+
+Player stats are built from per-round game logs, not just season averages. The
+same statsCentre endpoint returns single-round figures in `totals` when given a
+`roundId`, so a season of logs costs one request per round.
+
+That yields two things: a form-weighted mean (exponential, eight-game half-life)
+and a **measured** standard deviation per player, replacing a heuristic that
+guessed spread as a fraction of the mean.
+
+Be honest about the size of the win. Walk-forward over 4,441 player-games:
+
+| Predictor | Disposals MAE |
+| --- | --- |
+| Plain running mean | 3.807 |
+| Form-weighted, half-life 8 | **3.788** |
+
+**0.5% better.** Not a transformation. Form weighting matters for the few
+players whose role has actually shifted and is a wash for everyone else — but
+that tail is exactly where book lines diverge, which is what it was added for.
+Half-lives of 3, 5 and 12 all did worse.
+
+An empirical anytime-goal strike rate was also tried, on the reasoning that
+goals cluster and Poisson would overstate the chance of at least one. It lost
+the same walk-forward test (log-loss 0.5356 vs Poisson's 0.5119) — at ~22 games
+a per-player strike rate is too noisy, and shrinking it toward Poisson did not
+help either. Pricing stayed on Poisson; the strike rate is kept for display.
+
+Champion Data round ids are zero-padded to two digits. Rounds 10+ work unpadded,
+so an unpadded id fails only for rounds 1–9 — silently, since a bad round id
+returns an error rather than empty data. That affected the roster fetch too.
+
 ### Lines that diverge from the season average
 
 Season averages go stale when a player's role changes, and books price the

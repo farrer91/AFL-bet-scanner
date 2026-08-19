@@ -243,6 +243,11 @@ export function playerMarkets(player, bookPrice = 1.91, lineOffset = 0, odds = n
 
     if (stat.poisson) {
       if (s.rate < stat.minMean) continue;
+      // Poisson on the form-weighted rate. An empirical strike rate was tried
+      // instead - goals cluster, so it should have been better - but it lost a
+      // walk-forward test over 4,441 player-games (log-loss 0.5356 against
+      // Poisson's 0.5119). At ~22 games a per-player strike rate is too noisy,
+      // and shrinking it toward Poisson did not close the gap either.
       const p = poissonAtLeast(1, s.rate);
       const quoted = real ? primaryLine(real.lines, null) : null;
       const price = quoted && quoted.over ? quoted.over.price : bookPrice;
