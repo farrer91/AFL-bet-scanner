@@ -65,12 +65,7 @@ jobs:
             echo "No data changes to commit."
           else
             git commit -m "chore: refresh AFL data $(date -u +'%Y-%m-%d %H:%M UTC')"
+            # Vercel's Git integration deploys from this push - there is no
+            # separate deploy step, and no token to expire.
             git push
           fi
-
-      - name: Deploy to Vercel
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: npx vercel --prod --yes --token "$VERCEL_TOKEN"

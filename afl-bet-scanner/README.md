@@ -136,9 +136,15 @@ rule — it is enough to stop claiming it helps.
 
 `.github/workflows/fetch-afl-data.yml` refreshes data Thursday 08:00 UTC and
 Friday 02:00 UTC, and can be run manually with optional `round` / `year` inputs.
-It commits `src/data/` and deploys to Vercel.
+It commits `src/data/` and pushes.
 
-Required repository secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
+Deployment is handled by Vercel's Git integration, which builds on that push.
+The workflow holds no deploy step and no secrets, so there is no token to
+expire — the failure mode of a CLI deploy is that it lapses months later and
+scheduled deploys stop silently.
+
+The Vercel project's root directory must be `afl-bet-scanner`, since the app is
+a subfolder of the repository.
 
 ---
 
