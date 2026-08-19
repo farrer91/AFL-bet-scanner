@@ -180,7 +180,12 @@ async function fetchNamedPlayers(afl, year, roundNo) {
       const sideIds = extractPlayerIds(side);
       if (!sideIds.length) continue;
       for (const id of sideIds) ids.add(String(id));
-      if (side.teamName) teams.add(normaliseTeam(side.teamName));
+      // Rosters nest the name: teamName is { teamAbbr, teamName, teamNickname },
+      // not the bare string the stats endpoint returns.
+      const name = typeof side.teamName === 'object' && side.teamName
+        ? side.teamName.teamName
+        : side.teamName;
+      if (name) teams.add(normaliseTeam(name));
     }
   }
   return ids.size ? { ids, teams } : null;
@@ -351,8 +356,13 @@ function buildPlayers(playerRows, matches, named) {
     });
   }
 
-  // Highest-usage players first, so the cap keeps the players books price up.
-  rows.sort((a, b) => b.stats.disposals.mean - a.stats.disposals.mean);
+  // Confirmed starters outrank everyone: a named low-usage defender is a real
+  // market, while a high-usage player from an unnamed side may not even play.
+  // Within each group, highest usage first so the cap keeps the liquid markets.
+  rows.sort((a, b) => {
+    if (Boolean(a.named) !== Boolean(b.named)) return a.named ? -1 : 1;
+    return b.stats.disposals.mean - a.stats.disposals.mean;
+  });
   return rows.slice(0, MAX_PLAYERS);
 }
 
