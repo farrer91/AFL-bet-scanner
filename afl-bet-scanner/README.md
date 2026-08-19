@@ -104,6 +104,20 @@ exact name, then surname plus first initial, which reconciles Daniel/Dan and
 Nicholas/Nick. Same-surname collisions are reported rather than guessed. The
 script prints its own match rate so a silent drop in coverage is visible.
 
+### Lines that diverge from the season average
+
+Season averages go stale when a player's role changes, and books price the
+current role. Bradley Hill, a rebounding defender averaging 26.7 disposals, was
+quoted at 33.5 by two books independently — the model read that as a +49.8%
+edge on the Under when it was really our input being six games behind.
+
+Markets whose line sits `PROP_DIVERGENCE_Z` (0.75) model standard deviations
+from the player's average are flagged *Check role* rather than ranked, the same
+treatment wide-gap match markets get. The threshold is set on reasoning, not
+fitted: with only 17 real lines available, every value between 0.7 and 0.9
+flagged the same single market, so tuning it would have meant fitting to one
+case. Revisit once coverage is broader.
+
 ### These edges are not validated
 
 The six-season backtest covers match markets only. Historical prop odds cost 10x

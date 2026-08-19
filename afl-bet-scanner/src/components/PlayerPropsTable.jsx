@@ -256,7 +256,13 @@ export default function PlayerPropsTable({ matches, bookPrice, setBookPrice, lin
                   <td className="num px-2 py-2 text-right text-slate-300">
                     {activeStat?.poisson ? s.rate.toFixed(2) : s.mean.toFixed(1)}
                   </td>
-                  <td className="num px-2 py-2 text-right text-slate-400">{best.line}</td>
+                  <td
+                    className={`num px-2 py-2 text-right ${best.suspect ? 'text-amber-300' : 'text-slate-400'}`}
+                    title={best.suspect ? 'Line is far from the season average - check the player\u2019s current role' : undefined}
+                  >
+                    {best.line}
+                    {best.suspect && <span className="ml-1 text-[10px]">!</span>}
+                  </td>
                   <td className="px-2 py-2">
                     <span className={`text-xs font-medium ${tier.text}`}>
                       {activeStat?.poisson ? 'Anytime' : best.direction}
@@ -284,7 +290,13 @@ export default function PlayerPropsTable({ matches, bookPrice, setBookPrice, lin
                     )}
                   </td>
                   <td className="px-4 py-2 text-right">
-                    <EdgeBadge ev={best.ev} compact />
+                    <EdgeBadge
+                      ev={best.ev}
+                      suspect={best.suspect}
+                      suspectLabel="Check role"
+                      suspectHint={`Book line sits ${(best.divergence || 0).toFixed(1)} model deviations from this player's season average - the book may be pricing a changed role`}
+                      compact
+                    />
                   </td>
                 </tr>
               );

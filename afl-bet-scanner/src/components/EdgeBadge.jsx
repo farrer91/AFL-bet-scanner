@@ -8,12 +8,20 @@ import { BACKTEST } from '../data/backtest.js';
  * Player props were never priced against a real book, so their badges carry no
  * track record and must not borrow one.
  */
-export default function EdgeBadge({ ev, suspect = false, compact = false, tracked = false }) {
-  const tier = edgeTier(ev, suspect);
+export default function EdgeBadge({
+  ev,
+  suspect = false,
+  compact = false,
+  tracked = false,
+  suspectLabel = 'Check news',
+  suspectHint = 'Model and market disagree sharply - verify team news first',
+}) {
+  const base = edgeTier(ev, suspect);
+  const tier = suspect && ev > 0 ? { ...base, label: suspectLabel } : base;
   const record = tracked && !suspect ? BACKTEST.tiers.find((t) => t.key === tier.key) : null;
 
   const title = suspect && ev > 0
-    ? 'Model and market disagree sharply - verify team news first'
+    ? suspectHint
     : record
       ? `${record.label} edges returned ${record.roi > 0 ? '+' : ''}${pct(record.roi, 1)} over ${record.bets.toLocaleString()} historical bets`
       : undefined;

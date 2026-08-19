@@ -86,6 +86,22 @@ export const SUSPECT_GAP = 12;
  */
 export const LONGSHOT_FLOOR = 0.08;
 
+/**
+ * How far a book's prop line may sit from the player's season average before
+ * the market is flagged rather than ranked, measured in the model's own
+ * standard deviations.
+ *
+ * Season averages go stale when a player's role changes, and the books price
+ * the current role. A line three-quarters of a standard deviation away means
+ * the disagreement is comparable to the model's entire uncertainty, which is
+ * the point at which the edge more likely reflects our stale input than value.
+ *
+ * Set on that reasoning, not fitted: at the time of writing only 17 real lines
+ * existed, and every threshold between 0.7 and 0.9 flagged the same single
+ * market. Worth revisiting once coverage is broader.
+ */
+export const PROP_DIVERGENCE_Z = 0.75;
+
 export const pct = (v, dp = 1) => `${(v * 100).toFixed(dp)}%`;
 export const signed = (v, dp = 1) => `${v > 0 ? '+' : ''}${v.toFixed(dp)}`;
 
@@ -255,6 +271,12 @@ export function playerMarkets(player, bookPrice = 1.91, lineOffset = 0, odds = n
     if (line <= 0) continue;
     const over = probOver(line, s.mean, s.std);
 
+    // Only a real line can diverge - a modelled one is derived from the mean.
+    const divergence = quoted && quoted.line != null && s.std > 0
+      ? Math.abs(line - s.mean) / s.std
+      : 0;
+    const suspect = Boolean(quoted) && divergence >= PROP_DIVERGENCE_Z;
+
     // With both sides quoted the overround can be stripped out, giving the
     // book's own view of the chance rather than its shaded price.
     const fairMarket =
@@ -280,6 +302,8 @@ export function playerMarkets(player, bookPrice = 1.91, lineOffset = 0, odds = n
         ev: expectedValue(p, price),
         real: Boolean(q),
         book: q ? q.book : null,
+        suspect,
+        divergence,
       });
     }
   }
