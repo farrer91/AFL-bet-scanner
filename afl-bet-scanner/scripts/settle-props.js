@@ -225,6 +225,23 @@ const summarise = (bets) => {
   };
 };
 
+/**
+ * Totals the header needs, computed here so App never has to import the
+ * player and odds modules just to count them - that would drag ~800KB of data
+ * into the initial bundle for two numbers.
+ */
+function marketTotals() {
+  let markets = 0;
+  let withLiveOdds = 0;
+  for (const player of PLAYERS) {
+    const odds = PROP_ODDS.odds[player.id];
+    const priced = playerMarkets(player, 1.91, 0, odds);
+    markets += priced.length;
+    if (priced.some((m) => m.real)) withLiveOdds += 1;
+  }
+  return { markets, players: PLAYERS.length, withLiveOdds };
+}
+
 function buildRecord(store) {
   const settledSnaps = store.snapshots.filter((s) => s.settled);
   const all = settledSnaps.flatMap((s) =>
@@ -244,6 +261,7 @@ function buildRecord(store) {
 
   return {
     generatedAt: new Date().toISOString(),
+    totals: marketTotals(),
     rounds: settledSnaps.map((s) => s.round).sort((a, b) => a - b),
     pendingRounds: store.snapshots.filter((s) => !s.settled).map((s) => s.round),
     bets: all.length,

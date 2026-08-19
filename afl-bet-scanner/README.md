@@ -233,6 +233,22 @@ rule hides bets that returned +14.2% (n=71). Both are reported separately in the
 UI rather than as one misleading average. 71 bets is not enough to change the
 rule — it is enough to stop claiming it helps.
 
+## Bundle shape
+
+The props table carries ~800KB of player and odds data, so it and the track
+record load only when their tab is opened:
+
+| Chunk | Size | gzip |
+| --- | --- | --- |
+| initial | 169 KB | 54 KB |
+| props table (on demand) | 370 KB | 62 KB |
+| track record (on demand) | 10 KB | 3 KB |
+
+Nothing in `App.jsx` may import `playerProps.js` or `propOdds.js` — doing so
+pulls the whole payload back into the initial chunk. The market counts the
+header needs are computed during the data build by `marketTotals()` in
+`settle-props.js` and read from `propRecord.js` instead.
+
 ## Deployment
 
 `.github/workflows/fetch-afl-data.yml` refreshes data Thursday 08:00 UTC and

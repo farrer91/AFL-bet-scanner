@@ -1,14 +1,20 @@
-import { useMemo, useState } from 'react';
+import { lazy, Suspense, useMemo, useState } from 'react';
 import { MATCHES } from './data/matches.js';
-import { PLAYERS } from './data/playerProps.js';
 import { META } from './data/meta.js';
-import { PROP_ODDS } from './data/propOdds.js';
-import { matchMarkets, playerMarkets, edgeTier, pct } from './lib/edges.js';
+import { matchMarkets, edgeTier, pct } from './lib/edges.js';
 import MatchCard from './components/MatchCard.jsx';
 import TeamStatsPanel from './components/TeamStatsPanel.jsx';
-import PlayerPropsTable from './components/PlayerPropsTable.jsx';
-import TrackRecord from './components/TrackRecord.jsx';
 import { BACKTEST } from './data/backtest.js';
+import { PROP_RECORD } from './data/propRecord.js';
+
+// The props table carries ~800KB of player and odds data, and the track record
+// its own history. Both load when their tab is opened rather than on arrival.
+const PlayerPropsTable = lazy(() => import('./components/PlayerPropsTable.jsx'));
+const TrackRecord = lazy(() => import('./components/TrackRecord.jsx'));
+
+const TabFallback = () => (
+  <div className="panel px-4 py-10 text-center text-sm text-slate-500">Loading…</div>
+);
 
 const TABS = [
   { key: 'matches', label: 'Matches' },
@@ -34,9 +40,8 @@ export default function App() {
   // can produce a headline edge. Prop edges depend on a price the user supplies,
   // and are counted on their own tab instead.
   const summary = useMemo(() => {
-    let propCount = 0;
-    for (const p of PLAYERS)
-      propCount += playerMarkets(p, bookPrice, lineOffset, PROP_ODDS.odds[p.id]).length;
+    // Counted during the data build - see marketTotals() in settle-props.js.
+    const propCount = PROP_RECORD.totals?.markets ?? 0;
 
     let matchCount = 0;
     let live = 0;
@@ -58,7 +63,7 @@ export default function App() {
     }
 
     return { total: matchCount + propCount, live, flagged, best };
-  }, [overround, bookPrice, lineOffset]);
+  }, [overround]);
 
   const playingTeams = useMemo(
     () => new Set(MATCHES.flatMap((m) => [m.home, m.away])),
@@ -157,16 +162,22 @@ export default function App() {
             </>
           )}
 
-          {tab === 'record' && <TrackRecord />}
+          {tab === 'record' && (
+            <Suspense fallback={<TabFallback />}>
+              <TrackRecord />
+            </Suspense>
+          )}
 
           {tab === 'props' && (
-            <PlayerPropsTable
+            <Suspense fallback={<TabFallback />}>
+              <PlayerPropsTable
               matches={MATCHES}
               bookPrice={bookPrice}
               setBookPrice={setBookPrice}
               lineOffset={lineOffset}
-              setLineOffset={setLineOffset}
-            />
+                setLineOffset={setLineOffset}
+              />
+            </Suspense>
           )}
 
           {tab === 'teams' && <TeamStatsPanel playingTeams={playingTeams} />}
