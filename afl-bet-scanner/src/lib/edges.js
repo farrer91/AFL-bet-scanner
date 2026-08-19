@@ -99,6 +99,8 @@ export const signed = (v, dp = 1) => `${v > 0 ? '+' : ''}${v.toFixed(dp)}`;
 export function matchMarkets(match, overround = 1.05) {
   if (match.marketProb == null) return [];
   const markets = [];
+  // Tracked separately: these two guards have opposite track records, and a
+  // combined figure hides that the longshot filter does all the useful work.
   const wideGap = Math.abs(match.predictedMargin - match.marketMargin) >= SUSPECT_GAP;
   const longshot = Math.min(match.marketProb, 1 - match.marketProb) < LONGSHOT_FLOOR;
   const suspect = wideGap || longshot;
@@ -124,6 +126,8 @@ export function matchMarkets(match, overround = 1.05) {
       fair: fairOdds(s.modelProb),
       edgePts: null,
       suspect,
+      wideGap,
+      longshot,
     });
   }
 
@@ -143,6 +147,8 @@ export function matchMarkets(match, overround = 1.05) {
     fair: fairOdds(coverProb),
     edgePts: match.predictedMargin - match.marketMargin,
     suspect,
+    wideGap,
+    longshot,
   });
   markets.push({
     type: 'LINE',
@@ -156,6 +162,8 @@ export function matchMarkets(match, overround = 1.05) {
     fair: fairOdds(1 - coverProb),
     edgePts: match.marketMargin - match.predictedMargin,
     suspect,
+    wideGap,
+    longshot,
   });
 
   return markets;

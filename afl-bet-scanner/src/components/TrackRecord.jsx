@@ -102,21 +102,45 @@ export default function TrackRecord() {
         <Section title="Do the guards earn their keep?" subtitle="Markets the scanner refuses to rank">
           <div className="space-y-2 px-4 py-3 text-sm">
             <div className="flex items-center justify-between">
-              <span className="text-slate-400">Suppressed (wide gap or longshot)</span>
-              <span className={`num font-semibold ${tone(guards.suppressed.roi)}`}>
-                {signedPct(guards.suppressed.roi)}
+              <span className="text-slate-400">
+                Longshot filter
+                <span className="ml-1.5 text-[11px] text-slate-600">market under 8%</span>
+              </span>
+              <span className="num text-right">
+                <span className="font-semibold text-emerald-300">{signedPct(guards.longshot.roi)}</span>
+                <span className="ml-1.5 text-[11px] font-normal text-slate-500">
+                  n={guards.longshot.bets}
+                  {guards.longshot.ci &&
+                    ` · CI ${signedPct(guards.longshot.ci.low, 0)} to ${signedPct(guards.longshot.ci.high, 0)}`}
+                </span>
               </span>
             </div>
             <div className="flex items-center justify-between">
+              <span className="text-slate-400">
+                Wide-gap filter
+                <span className="ml-1.5 text-[11px] text-slate-600">12+ pts apart</span>
+              </span>
+              <span className="num text-right">
+                <span className="font-semibold text-amber-300">{signedPct(guards.wideGap.roi)}</span>
+                <span className="ml-1.5 text-[11px] font-normal text-slate-500">
+                  n={guards.wideGap.bets}
+                  {guards.wideGap.ci &&
+                    ` · CI ${signedPct(guards.wideGap.ci.low, 0)} to ${signedPct(guards.wideGap.ci.high, 0)}`}
+                </span>
+              </span>
+            </div>
+            <div className="flex items-center justify-between border-t border-slate-800 pt-2">
               <span className="text-slate-400">Kept and surfaced</span>
               <span className={`num font-semibold ${tone(guards.kept.roi)}`}>
                 {signedPct(guards.kept.roi)}
               </span>
             </div>
-            <p className="border-t border-slate-800 pt-2 text-[11px] leading-relaxed text-slate-500">
-              Suppressed markets returned{' '}
-              {(Math.abs(guards.suppressed.roi - guards.kept.roi) * 100).toFixed(1)}pp worse than the
-              ones kept, so the flags are removing genuinely bad bets rather than good ones.
+            <p className="text-[11px] leading-relaxed text-slate-500">
+              The two rules pull opposite ways, and neither interval excludes zero on its own.
+              Dropping longshots is backed independently by the calibration data, where the model
+              overstated sub-20% chances across {calibration[0].bets} games. The wide-gap rule has no
+              such support — the bets it hides returned {signedPct(guards.wideGap.roi)} — but{' '}
+              {guards.wideGap.bets} bets is not enough to justify moving it yet.
             </p>
           </div>
         </Section>

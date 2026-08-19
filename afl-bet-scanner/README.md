@@ -107,6 +107,31 @@ their keep: markets they suppress returned 3.2pp worse than those kept.
 
 Treat the edge percentages as a ranking, not a forecast. The app says so too.
 
+### Narrowing to model-vs-market disagreements
+
+```bash
+npm run study
+```
+
+`scripts/study-disagreement.js` tests whether betting the model's side of a
+disagreement is profitable. The 6-point threshold looked promising at 55.5%
+against a 52.5% break-even — but it does not survive scrutiny:
+
+- Disjoint bands show no smooth structure. The 3–6pt band actually *loses*
+  (47.6%); the apparent trend in a cumulative threshold sweep is overlap.
+- Walk-forward, choosing the threshold only from earlier seasons, returns +9.6%
+  over 113 bets with a 95% interval of −8.0% to +26.2%.
+- A permutation test that repeats the threshold search against noise finds a
+  result this good **14% of the time**. The effect does not clear multiplicity.
+
+So the scanner was **not** narrowed. Doing so would be fitting to noise.
+
+The study did surface one real thing: the two guards have opposite records.
+Dropping longshots is corroborated by the calibration data, but the wide-gap
+rule hides bets that returned +14.2% (n=71). Both are reported separately in the
+UI rather than as one misleading average. 71 bets is not enough to change the
+rule — it is enough to stop claiming it helps.
+
 ## Deployment
 
 `.github/workflows/fetch-afl-data.yml` refreshes data Thursday 08:00 UTC and

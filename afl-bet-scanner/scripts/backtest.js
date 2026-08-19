@@ -257,8 +257,13 @@ async function main() {
   console.log('\nGUARD VALIDATION - markets the scanner suppresses');
   console.log(HEAD);
   const suppressed = summarise(all.filter((b) => b.suspect && b.ev > 0));
+  // The two guards pull in opposite directions, so they are scored apart.
+  const longshotGuard = summarise(all.filter((b) => b.longshot && b.ev > 0));
+  const wideGapGuard = summarise(all.filter((b) => b.wideGap && !b.longshot && b.ev > 0));
   const kept = summarise(live.filter((b) => b.ev >= 0.05));
-  console.log(line('suppressed, +EV', suppressed));
+  console.log(line('suppressed, +EV (all)', suppressed));
+  console.log(line('  by longshot filter', longshotGuard));
+  console.log(line('  by wide-gap filter', wideGapGuard));
   console.log(line('kept, +5% EV', kept));
 
   console.log('\nBASELINES');
@@ -296,7 +301,15 @@ async function main() {
       markets: all.length,
       generatedAt: new Date().toISOString(),
       tiers,
-      guards: { suppressed, kept },
+      guards: {
+        suppressed,
+        kept,
+        longshot: { ...longshotGuard, ci: bootstrapRoi(all.filter((b) => b.longshot && b.ev > 0)) },
+        wideGap: {
+          ...wideGapGuard,
+          ci: bootstrapRoi(all.filter((b) => b.wideGap && !b.longshot && b.ev > 0)),
+        },
+      },
       baselines: { blindLine, favourites },
       calibration: cal,
       modelVsMarket: mvm,
