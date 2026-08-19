@@ -88,6 +88,9 @@ anytime goalscorer — costs 10–18 credits for a full round.
 
 Two things about coverage are worth knowing:
 
+- **The player cap is 450**, raised from 396 once the odds feed showed 29
+  players with 10+ games and live book prices were being cut by it. At 450 no
+  player with a quoted market is dropped.
 - **Books post lines close to the game.** A Thursday fetch found disposals for
   the Thursday match only; the other eight had anytime goalscorer alone. The
   Friday run picks up the rest.

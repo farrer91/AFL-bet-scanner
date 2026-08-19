@@ -21,7 +21,7 @@ const CONTACT = 'AFL-Bet-Edge-Scanner/1.0 (farrer91@gmail.com)';
 const SQUIGGLE = 'https://api.squiggle.com.au/';
 const AFL_API = 'https://api.afl.com.au/cfs/afl';
 
-const MAX_PLAYERS = 396;
+const MAX_PLAYERS = 450;
 const FORM_WINDOW = 8; // rolling window for team averages
 
 // AFL Stats API team names -> Squiggle team names.
