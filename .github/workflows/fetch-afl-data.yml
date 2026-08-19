@@ -2,9 +2,14 @@ name: Fetch AFL data
 
 on:
   schedule:
-    # Thursday 8am UTC - after Wednesday night team news lands.
-    - cron: '0 8 * * 4'
-    # Friday 2am UTC - picks up late changes once rosters are announced.
+    # Thursday 06:37 UTC = 16:37 AEST / 17:37 AEDT. Serves the Thursday night
+    # game, whose roster lands ~24h ahead of the weekly team announcement. Run
+    # early enough to survive daylight saving: at 08:00 UTC an AEDT round left
+    # only 30 minutes before a 19:30 bounce. The offset minute avoids the queue
+    # that builds on the hour, when scheduled runs are most often delayed.
+    - cron: '37 6 * * 4'
+    # Friday 02:00 UTC = 12:00 Friday AEST, after Thursday evening's team
+    # announcement, so this run has rosters for the whole weekend.
     - cron: '0 2 * * 5'
   workflow_dispatch:
     inputs:
