@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "fetch-data": "node scripts/fetch-afl-data.js",
     "backtest": "node scripts/backtest.js",
-    "study": "node scripts/study-disagreement.js --years 2021-2026"
+    "study": "node scripts/study-disagreement.js --years 2021-2026",
+    "fetch-odds": "node scripts/fetch-odds.js"
   },
   "dependencies": {
     "react": "^18.3.1",

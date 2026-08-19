@@ -1,10 +1,21 @@
 import { useMemo, useState } from 'react';
 import { PLAYERS } from '../data/playerProps.js';
+import { PROP_ODDS } from '../data/propOdds.js';
 import { PROP_STATS, playerMarkets, pct, edgeTier } from '../lib/edges.js';
 import EdgeBadge from './EdgeBadge.jsx';
 
 const POSITIONS = ['ALL', 'MID', 'FWD', 'DEF', 'RUC'];
 const PAGE_SIZE = 40;
+
+const BOOK_LABEL = {
+  sportsbet: 'Sportsbet',
+  ladbrokes_au: 'Ladbrokes',
+  neds: 'Neds',
+  tab: 'TAB',
+  tabtouch: 'TABtouch',
+  unibet: 'Unibet',
+  pointsbetau: 'PointsBet',
+};
 
 const posColour = {
   MID: 'bg-sky-500/15 text-sky-300',
@@ -20,6 +31,7 @@ export default function PlayerPropsTable({ matches, bookPrice, setBookPrice, lin
   const [search, setSearch] = useState('');
   const [minEdge, setMinEdge] = useState(-1);
   const [sort, setSort] = useState('avg');
+  const [realOnly, setRealOnly] = useState(true);
   const [limit, setLimit] = useState(PAGE_SIZE);
 
   const activeStat = PROP_STATS.find((s) => s.key === stat);
@@ -32,8 +44,11 @@ export default function PlayerPropsTable({ matches, bookPrice, setBookPrice, lin
       if (match !== 'ALL' && p.match !== match) continue;
       if (q && !p.player.toLowerCase().includes(q) && !p.team.toLowerCase().includes(q)) continue;
 
-      const markets = playerMarkets(p, bookPrice, lineOffset).filter((m) => m.statKey === stat);
+      const markets = playerMarkets(p, bookPrice, lineOffset, PROP_ODDS.odds[p.id]).filter(
+        (m) => m.statKey === stat,
+      );
       if (!markets.length) continue;
+      if (realOnly && !markets.some((m) => m.real)) continue;
       const best = markets.reduce((a, b) => (b.ev > a.ev ? b : a));
       if (best.ev < minEdge) continue;
       out.push({ player: p, best, markets });
@@ -47,7 +62,7 @@ export default function PlayerPropsTable({ matches, bookPrice, setBookPrice, lin
             ? r.player.stats[stat].rate
             : r.player.stats[stat].mean;
     return out.sort((a, b) => value(b) - value(a));
-  }, [position, match, stat, search, minEdge, bookPrice, lineOffset, sort, activeStat]);
+  }, [position, match, stat, search, minEdge, bookPrice, lineOffset, sort, realOnly, activeStat]);
 
   const visible = rows.slice(0, limit);
   const resetLimit = (fn) => (v) => {
@@ -58,16 +73,25 @@ export default function PlayerPropsTable({ matches, bookPrice, setBookPrice, lin
   return (
     <section className="panel">
       <header className="space-y-3 border-b border-slate-800 px-4 py-3">
+        <p className="rounded-lg border border-amber-500/25 bg-amber-500/5 px-3 py-2 text-[11px] leading-relaxed text-amber-100/80">
+          <strong className="text-amber-200">These edges are untested.</strong> Prices are the best
+          of {PROP_ODDS.bookmakers.length} books, so an edge shown here needs an account at that
+          book — and picking the most generous quote flatters the number. The match-market model
+          overstated its edge by roughly 19 points when it was finally measured; this props model has
+          had no equivalent test, because historical prop odds are not available to check it against.
+          Read the edge column as a shortlist to look into, not a verdict.
+        </p>
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <div>
             <h2 className="font-semibold text-slate-100">Player props</h2>
             <p className="text-xs text-slate-500">
-              Fair price is what the model needs at the line shown. Set your book&rsquo;s line and
-              price to turn it into a real edge.
+              Live lines from {PROP_ODDS.bookmakers.length} bookmakers where quoted; elsewhere the
+              line is modelled and the output is a fair price, not an edge.
             </p>
           </div>
           <p className="num text-xs text-slate-500">
             {rows.length} of {PLAYERS.length} players
+            <span className="ml-2 text-slate-600">{PROP_ODDS.coverage.players} with live lines</span>
           </p>
         </div>
 
@@ -149,6 +173,16 @@ export default function PlayerPropsTable({ matches, bookPrice, setBookPrice, lin
             </label>
           )}
 
+          <label className="flex cursor-pointer items-center gap-2 text-xs text-slate-400">
+            <input
+              type="checkbox"
+              checked={realOnly}
+              onChange={(e) => resetLimit(setRealOnly)(e.target.checked)}
+              className="h-3.5 w-3.5 rounded border-slate-700 bg-slate-800 accent-emerald-500"
+            />
+            Live odds only
+          </label>
+
           <label className="flex items-center gap-1.5 text-xs text-slate-500">
             Sort
             <select
@@ -189,6 +223,7 @@ export default function PlayerPropsTable({ matches, bookPrice, setBookPrice, lin
               <th className="px-2 py-2 text-left font-medium">Best side</th>
               <th className="px-2 py-2 text-right font-medium">Model</th>
               <th className="px-2 py-2 text-right font-medium">Fair $</th>
+              <th className="px-2 py-2 text-left font-medium">Price</th>
               <th className="px-4 py-2 text-right font-medium">Edge</th>
             </tr>
           </thead>
@@ -236,6 +271,18 @@ export default function PlayerPropsTable({ matches, bookPrice, setBookPrice, lin
                   >
                     {best.fair.toFixed(2)}
                   </td>
+                  <td className="px-2 py-2">
+                    {best.real ? (
+                      <span className="num text-xs text-slate-200">
+                        ${best.odds.toFixed(2)}
+                        <span className="ml-1.5 text-[10px] uppercase tracking-wide text-emerald-400/80">
+                          {BOOK_LABEL[best.book] || best.book}
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="text-[11px] text-slate-600">modelled</span>
+                    )}
+                  </td>
                   <td className="px-4 py-2 text-right">
                     <EdgeBadge ev={best.ev} compact />
                   </td>
@@ -244,8 +291,10 @@ export default function PlayerPropsTable({ matches, bookPrice, setBookPrice, lin
             })}
             {!visible.length && (
               <tr>
-                <td colSpan={8} className="px-4 py-10 text-center text-sm text-slate-500">
-                  No props clear that filter. Try a lower minimum edge or a different stat.
+                <td colSpan={9} className="px-4 py-10 text-center text-sm text-slate-500">
+                  {realOnly
+                    ? 'No bookmaker is quoting this stat yet. Lines appear closer to each game — untick “Live odds only” to see modelled fair prices.'
+                    : 'No props clear that filter. Try a lower minimum edge or a different stat.'}
                 </td>
               </tr>
             )}

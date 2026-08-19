@@ -52,6 +52,15 @@ jobs:
             ${{ inputs.round && format('--round {0}', inputs.round) || '' }} \
             ${{ inputs.year && format('--year {0}', inputs.year) || '' }}
 
+      # Bookmaker prop odds. The script exits cleanly when ODDS_API_KEY is
+      # absent, and the app falls back to modelled lines, so a missing or
+      # exhausted key degrades the feed rather than breaking the build.
+      - name: Fetch bookmaker odds
+        continue-on-error: true
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: node scripts/fetch-odds.js
+
       # The track record is shown in the UI, so it must not go stale as results
       # land. A failure here must not block the data refresh or the deploy.
       - name: Refresh backtest

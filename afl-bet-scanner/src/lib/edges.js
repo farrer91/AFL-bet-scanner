@@ -194,39 +194,92 @@ export const PROP_STATS = [
  */
 export const modelledLine = (mean) => Math.round(mean - 0.5) + 0.5;
 
-export function playerMarkets(player, bookPrice = 1.91, lineOffset = 0) {
+/**
+ * Pick the book's main line for a stat: the one nearest the player's own
+ * average, preferring lines quoted on both sides since only those can be
+ * de-vigged into a fair market probability.
+ */
+function primaryLine(lines, mean) {
+  const entries = Object.values(lines).filter((l) => l.over || l.under);
+  if (!entries.length) return null;
+  const twoSided = entries.filter((l) => l.over && l.under);
+  const pool = twoSided.length ? twoSided : entries;
+  if (pool.length === 1 || mean == null) return pool[0];
+  return pool.reduce((best, l) =>
+    Math.abs((l.line ?? mean) - mean) < Math.abs((best.line ?? mean) - mean) ? l : best,
+  );
+}
+
+/**
+ * Build the priced markets for one player.
+ *
+ * `odds` is that player's entry from the bookmaker feed. Where a real line
+ * exists it is used, and the edge is genuine. Where it does not, the line is
+ * modelled and the output is a fair price rather than an edge - the two are
+ * kept distinct by the `real` flag so the UI never presents one as the other.
+ */
+export function playerMarkets(player, bookPrice = 1.91, lineOffset = 0, odds = null) {
   const out = [];
   for (const stat of PROP_STATS) {
     const s = player.stats[stat.key];
     if (!s) continue;
+    const real = odds && odds.markets && odds.markets[stat.key];
 
-    let line;
-    let over;
     if (stat.poisson) {
       if (s.rate < stat.minMean) continue;
-      line = 0.5; // anytime goalscorer - the line is fixed, so no offset
-      over = poissonAtLeast(1, s.rate);
-    } else {
-      if (s.mean < stat.minMean) continue;
-      line = modelledLine(s.mean) + lineOffset;
-      if (line <= 0) continue;
-      over = probOver(line, s.mean, s.std);
+      const p = poissonAtLeast(1, s.rate);
+      const quoted = real ? primaryLine(real.lines, null) : null;
+      const price = quoted && quoted.over ? quoted.over.price : bookPrice;
+      out.push({
+        statKey: stat.key,
+        stat: stat.label,
+        short: stat.short,
+        direction: 'Over',
+        line: 0.5,
+        market: 'Anytime goal',
+        odds: price,
+        modelProb: p,
+        marketProb: impliedProb(price),
+        fair: fairOdds(p),
+        ev: expectedValue(p, price),
+        real: Boolean(quoted && quoted.over),
+        book: quoted && quoted.over ? quoted.over.book : null,
+      });
+      continue;
     }
 
-    for (const [dir, p] of [['Over', over], ['Under', 1 - over]]) {
-      if (stat.poisson && dir === 'Under') continue; // anytime scorer is one-way
+    if (s.mean < stat.minMean) continue;
+
+    const quoted = real ? primaryLine(real.lines, s.mean) : null;
+    const line = quoted && quoted.line != null ? quoted.line : modelledLine(s.mean) + lineOffset;
+    if (line <= 0) continue;
+    const over = probOver(line, s.mean, s.std);
+
+    // With both sides quoted the overround can be stripped out, giving the
+    // book's own view of the chance rather than its shaded price.
+    const fairMarket =
+      quoted && quoted.over && quoted.under
+        ? devig(impliedProb(quoted.over.price), impliedProb(quoted.under.price))
+        : null;
+
+    for (const [dir, p, idx] of [['Over', over, 0], ['Under', 1 - over, 1]]) {
+      const side = dir.toLowerCase();
+      const q = quoted && quoted[side];
+      const price = q ? q.price : bookPrice;
       out.push({
         statKey: stat.key,
         stat: stat.label,
         short: stat.short,
         direction: dir,
         line,
-        market: stat.poisson ? 'Anytime goal' : `${dir} ${line} ${stat.label.toLowerCase()}`,
-        odds: bookPrice,
+        market: `${dir} ${line} ${stat.label.toLowerCase()}`,
+        odds: price,
         modelProb: p,
-        marketProb: impliedProb(bookPrice),
+        marketProb: fairMarket ? fairMarket[idx] : impliedProb(price),
         fair: fairOdds(p),
-        ev: expectedValue(p, bookPrice),
+        ev: expectedValue(p, price),
+        real: Boolean(q),
+        book: q ? q.book : null,
       });
     }
   }

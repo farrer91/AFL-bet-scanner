@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { MATCHES } from './data/matches.js';
 import { PLAYERS } from './data/playerProps.js';
 import { META } from './data/meta.js';
+import { PROP_ODDS } from './data/propOdds.js';
 import { matchMarkets, playerMarkets, edgeTier, pct } from './lib/edges.js';
 import MatchCard from './components/MatchCard.jsx';
 import TeamStatsPanel from './components/TeamStatsPanel.jsx';
@@ -34,7 +35,8 @@ export default function App() {
   // and are counted on their own tab instead.
   const summary = useMemo(() => {
     let propCount = 0;
-    for (const p of PLAYERS) propCount += playerMarkets(p, bookPrice, lineOffset).length;
+    for (const p of PLAYERS)
+      propCount += playerMarkets(p, bookPrice, lineOffset, PROP_ODDS.odds[p.id]).length;
 
     let matchCount = 0;
     let live = 0;

@@ -71,6 +71,43 @@ construction — so the table's output is the **fair price**, not an edge. Set t
 line offset and book price to match a real market and the edge column becomes
 meaningful.
 
+## Bookmaker odds
+
+```bash
+npm run fetch-odds
+```
+
+Pulls AFL player props from [The Odds API](https://the-odds-api.com) and writes
+`src/data/propOdds.js`. Needs `ODDS_API_KEY` in the environment or a local
+`.env`; without it the script exits cleanly and the app falls back to modelled
+lines, so nothing depends on the feed being reachable.
+
+Quota is `[markets] x [regions]` per event against 500 free credits a month,
+charged only on markets that actually return. The default pair — disposals and
+anytime goalscorer — costs 10–18 credits for a full round.
+
+Two things about coverage are worth knowing:
+
+- **Books post lines close to the game.** A Thursday fetch found disposals for
+  the Thursday match only; the other eight had anytime goalscorer alone. The
+  Friday run picks up the rest.
+- **Prices are the best of seven books**, which is how line shopping works, but
+  it means the headline edge belongs to whichever book is most generous, and
+  you need an account there to take it.
+
+Fixtures are matched to events on UTC start time rather than team name, since
+the feeds disagree ("St Kilda" vs "St Kilda Saints"). Players are matched on
+exact name, then surname plus first initial, which reconciles Daniel/Dan and
+Nicholas/Nick. Same-surname collisions are reported rather than guessed. The
+script prints its own match rate so a silent drop in coverage is visible.
+
+### These edges are not validated
+
+The six-season backtest covers match markets only. Historical prop odds cost 10x
+credits, so there is nothing to test the props model against. Given the match
+model overstated its edge by ~19 points until it was measured, treat prop edges
+as a shortlist, not a signal. The UI says the same.
+
 ## Backtesting
 
 ```bash
