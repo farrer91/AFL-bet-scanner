@@ -2,11 +2,11 @@
 // 0 settled bets across 0 round(s)
 
 export const PROP_RECORD = {
-  "generatedAt": "2026-08-20T07:25:03.377Z",
+  "generatedAt": "2026-08-21T03:11:02.834Z",
   "totals": {
-    "markets": 5909,
-    "players": 450,
-    "withLiveOdds": 204
+    "markets": 5120,
+    "players": 416,
+    "withLiveOdds": 227
   },
   "rounds": [],
   "pendingRounds": [
