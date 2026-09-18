@@ -2,7 +2,7 @@
 // 894 settled bets across 4 round(s)
 
 export const PROP_RECORD = {
-  "generatedAt": "2026-09-17T11:59:42.511Z",
+  "generatedAt": "2026-09-18T07:20:50.983Z",
   "totals": {
     "markets": 1338,
     "players": 104,
