@@ -18144,7 +18144,7 @@
     {
       "year": 2026,
       "round": 29,
-      "capturedAt": "2026-09-24T12:07:19.883Z",
+      "capturedAt": "2026-09-25T07:36:54.326Z",
       "settled": false,
       "markets": [
         {
@@ -18169,10 +18169,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 28.5,
-          "odds": 1.95,
+          "odds": 2,
           "book": "pointsbetau",
           "modelProb": 0.4733,
-          "ev": -0.0771,
+          "ev": -0.0534,
           "suspect": false
         },
         {
@@ -18196,11 +18196,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Over",
-          "line": 25.5,
-          "odds": 1.89,
-          "book": "sportsbet",
-          "modelProb": 0.6279,
-          "ev": 0.1867,
+          "line": 26.5,
+          "odds": 1.87,
+          "book": "pointsbetau",
+          "modelProb": 0.5693,
+          "ev": 0.0645,
           "suspect": false
         },
         {
@@ -18210,11 +18210,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Under",
-          "line": 25.5,
-          "odds": 1.92,
-          "book": "neds",
-          "modelProb": 0.3721,
-          "ev": -0.2855,
+          "line": 26.5,
+          "odds": 1.87,
+          "book": "pointsbetau",
+          "modelProb": 0.4307,
+          "ev": -0.1945,
           "suspect": false
         },
         {
@@ -18226,7 +18226,7 @@
           "direction": "Over",
           "line": 24.5,
           "odds": 1.87,
-          "book": "pointsbetau",
+          "book": "sportsbet",
           "modelProb": 0.574,
           "ev": 0.0733,
           "suspect": false
@@ -18267,10 +18267,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 24.5,
-          "odds": 1.87,
+          "odds": 1.9,
           "book": "pointsbetau",
           "modelProb": 0.5012,
-          "ev": -0.0628,
+          "ev": -0.0477,
           "suspect": false
         },
         {
@@ -18295,10 +18295,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 23.5,
-          "odds": 1.85,
-          "book": "sportsbet",
+          "odds": 1.87,
+          "book": "pointsbetau",
           "modelProb": 0.5636,
-          "ev": 0.0426,
+          "ev": 0.0539,
           "suspect": false
         },
         {
@@ -18309,10 +18309,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 23.5,
-          "odds": 1.95,
-          "book": "pointsbetau",
+          "odds": 1.91,
+          "book": "neds",
           "modelProb": 0.4364,
-          "ev": -0.149,
+          "ev": -0.1665,
           "suspect": false
         },
         {
@@ -18336,11 +18336,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Over",
-          "line": 20.5,
+          "line": 21.5,
           "odds": 1.87,
           "book": "pointsbetau",
-          "modelProb": 0.7283,
-          "ev": 0.362,
+          "modelProb": 0.6474,
+          "ev": 0.2107,
           "suspect": false
         },
         {
@@ -18350,11 +18350,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Under",
-          "line": 20.5,
-          "odds": 1.94,
-          "book": "neds",
-          "modelProb": 0.2717,
-          "ev": -0.473,
+          "line": 21.5,
+          "odds": 1.87,
+          "book": "pointsbetau",
+          "modelProb": 0.3526,
+          "ev": -0.3407,
           "suspect": false
         },
         {
@@ -18365,10 +18365,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 20.5,
-          "odds": 1.84,
-          "book": "sportsbet",
+          "odds": 1.87,
+          "book": "pointsbetau",
           "modelProb": 0.7289,
-          "ev": 0.3411,
+          "ev": 0.363,
           "suspect": false
         },
         {
@@ -18379,10 +18379,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 20.5,
-          "odds": 1.95,
-          "book": "pointsbetau",
+          "odds": 1.91,
+          "book": "neds",
           "modelProb": 0.2711,
-          "ev": -0.4713,
+          "ev": -0.4821,
           "suspect": false
         },
         {
@@ -18436,7 +18436,7 @@
           "direction": "Over",
           "line": 0.5,
           "odds": 1.4,
-          "book": "neds",
+          "book": "tab",
           "modelProb": 0.7018,
           "ev": -0.0175,
           "suspect": false
@@ -18448,11 +18448,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Over",
-          "line": 21.5,
-          "odds": 1.77,
+          "line": 22.5,
+          "odds": 1.87,
           "book": "pointsbetau",
-          "modelProb": 0.5496,
-          "ev": -0.0272,
+          "modelProb": 0.4418,
+          "ev": -0.1738,
           "suspect": false
         },
         {
@@ -18462,11 +18462,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Under",
-          "line": 21.5,
-          "odds": 2,
+          "line": 22.5,
+          "odds": 1.87,
           "book": "pointsbetau",
-          "modelProb": 0.4504,
-          "ev": -0.0992,
+          "modelProb": 0.5582,
+          "ev": 0.0438,
           "suspect": false
         },
         {
@@ -18561,10 +18561,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 18.5,
-          "odds": 1.85,
-          "book": "neds",
+          "odds": 1.87,
+          "book": "pointsbetau",
           "modelProb": 0.6165,
-          "ev": 0.1406,
+          "ev": 0.1529,
           "suspect": false
         },
         {
@@ -18576,7 +18576,7 @@
           "direction": "Under",
           "line": 18.5,
           "odds": 1.9,
-          "book": "pointsbetau",
+          "book": "neds",
           "modelProb": 0.3835,
           "ev": -0.2714,
           "suspect": false
@@ -18603,10 +18603,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 16.5,
-          "odds": 1.91,
-          "book": "sportsbet",
+          "odds": 1.9,
+          "book": "neds",
           "modelProb": 0.3227,
-          "ev": -0.3836,
+          "ev": -0.3868,
           "suspect": false
         },
         {
@@ -18644,11 +18644,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Over",
-          "line": 17.5,
+          "line": 18.5,
           "odds": 1.87,
           "book": "pointsbetau",
-          "modelProb": 0.5999,
-          "ev": 0.1218,
+          "modelProb": 0.5195,
+          "ev": -0.0285,
           "suspect": false
         },
         {
@@ -18658,11 +18658,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Under",
-          "line": 17.5,
+          "line": 18.5,
           "odds": 1.87,
           "book": "pointsbetau",
-          "modelProb": 0.4001,
-          "ev": -0.2518,
+          "modelProb": 0.4805,
+          "ev": -0.1015,
           "suspect": false
         },
         {
@@ -18673,10 +18673,10 @@
           "statKey": "goals",
           "direction": "Over",
           "line": 0.5,
-          "odds": 2.9,
-          "book": "tab",
+          "odds": 2.2,
+          "book": "neds",
           "modelProb": 0.4674,
-          "ev": 0.3555,
+          "ev": 0.0283,
           "suspect": false
         },
         {
@@ -18715,10 +18715,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 19.5,
-          "odds": 1.85,
-          "book": "sportsbet",
+          "odds": 1.9,
+          "book": "pointsbetau",
           "modelProb": 0.4292,
-          "ev": -0.206,
+          "ev": -0.1845,
           "suspect": false
         },
         {
@@ -18757,10 +18757,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 16.5,
-          "odds": 1.87,
+          "odds": 1.95,
           "book": "pointsbetau",
           "modelProb": 0.6852,
-          "ev": 0.2813,
+          "ev": 0.3361,
           "suspect": false
         },
         {
@@ -18799,10 +18799,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 18.5,
-          "odds": 1.84,
-          "book": "sportsbet",
+          "odds": 2,
+          "book": "pointsbetau",
           "modelProb": 0.4794,
-          "ev": -0.1179,
+          "ev": -0.0412,
           "suspect": false
         },
         {
@@ -18813,10 +18813,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 18.5,
-          "odds": 1.95,
-          "book": "pointsbetau",
+          "odds": 1.91,
+          "book": "neds",
           "modelProb": 0.5206,
-          "ev": 0.0152,
+          "ev": -0.0057,
           "suspect": false
         },
         {
@@ -18828,7 +18828,7 @@
           "direction": "Over",
           "line": 16.5,
           "odds": 1.87,
-          "book": "pointsbetau",
+          "book": "sportsbet",
           "modelProb": 0.623,
           "ev": 0.1649,
           "suspect": false
@@ -18856,7 +18856,7 @@
           "direction": "Over",
           "line": 16.5,
           "odds": 1.87,
-          "book": "pointsbetau",
+          "book": "neds",
           "modelProb": 0.6068,
           "ev": 0.1348,
           "suspect": false
@@ -18869,10 +18869,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 16.5,
-          "odds": 1.89,
-          "book": "sportsbet",
+          "odds": 1.9,
+          "book": "pointsbetau",
           "modelProb": 0.3932,
-          "ev": -0.2569,
+          "ev": -0.253,
           "suspect": false
         },
         {
@@ -18896,11 +18896,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Over",
-          "line": 15.5,
+          "line": 14.5,
           "odds": 1.87,
           "book": "pointsbetau",
-          "modelProb": 0.6296,
-          "ev": 0.1773,
+          "modelProb": 0.7235,
+          "ev": 0.3529,
           "suspect": false
         },
         {
@@ -18910,11 +18910,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Under",
-          "line": 15.5,
-          "odds": 1.87,
-          "book": "pointsbetau",
-          "modelProb": 0.3704,
-          "ev": -0.3073,
+          "line": 14.5,
+          "odds": 1.9,
+          "book": "neds",
+          "modelProb": 0.2765,
+          "ev": -0.4746,
           "suspect": false
         },
         {
@@ -18925,10 +18925,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 14.5,
-          "odds": 1.92,
-          "book": "neds",
+          "odds": 1.89,
+          "book": "sportsbet",
           "modelProb": 0.6604,
-          "ev": 0.268,
+          "ev": 0.2482,
           "suspect": false
         },
         {
@@ -18939,10 +18939,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 14.5,
-          "odds": 1.87,
-          "book": "pointsbetau",
+          "odds": 1.9,
+          "book": "neds",
           "modelProb": 0.3396,
-          "ev": -0.365,
+          "ev": -0.3548,
           "suspect": false
         },
         {
@@ -18967,10 +18967,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 15.5,
-          "odds": 1.87,
+          "odds": 1.95,
           "book": "pointsbetau",
           "modelProb": 0.5167,
-          "ev": -0.0339,
+          "ev": 0.0075,
           "suspect": false
         },
         {
@@ -18995,10 +18995,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 15.5,
-          "odds": 1.88,
-          "book": "sportsbet",
+          "odds": 1.95,
+          "book": "pointsbetau",
           "modelProb": 0.4821,
-          "ev": -0.0936,
+          "ev": -0.0599,
           "suspect": false
         },
         {
@@ -19023,10 +19023,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 13.5,
-          "odds": 1.85,
-          "book": "sportsbet",
+          "odds": 1.87,
+          "book": "pointsbetau",
           "modelProb": 0.6276,
-          "ev": 0.161,
+          "ev": 0.1735,
           "suspect": false
         },
         {
@@ -19038,7 +19038,7 @@
           "direction": "Under",
           "line": 13.5,
           "odds": 1.9,
-          "book": "pointsbetau",
+          "book": "neds",
           "modelProb": 0.3724,
           "ev": -0.2924,
           "suspect": false
@@ -19052,7 +19052,7 @@
           "direction": "Over",
           "line": 11.5,
           "odds": 1.87,
-          "book": "sportsbet",
+          "book": "pointsbetau",
           "modelProb": 0.6583,
           "ev": 0.2311,
           "suspect": false
@@ -19078,11 +19078,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Over",
-          "line": 11.5,
+          "line": 12.5,
           "odds": 1.87,
           "book": "pointsbetau",
-          "modelProb": 0.6742,
-          "ev": 0.2607,
+          "modelProb": 0.5779,
+          "ev": 0.0806,
           "suspect": false
         },
         {
@@ -19092,11 +19092,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Under",
-          "line": 11.5,
-          "odds": 1.91,
-          "book": "sportsbet",
-          "modelProb": 0.3258,
-          "ev": -0.3777,
+          "line": 12.5,
+          "odds": 1.87,
+          "book": "pointsbetau",
+          "modelProb": 0.4221,
+          "ev": -0.2106,
           "suspect": false
         },
         {
@@ -19149,10 +19149,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 12.5,
-          "odds": 1.87,
+          "odds": 1.9,
           "book": "sportsbet",
           "modelProb": 0.5228,
-          "ev": -0.0225,
+          "ev": -0.0068,
           "suspect": false
         },
         {
@@ -19191,10 +19191,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 12.5,
-          "odds": 1.86,
-          "book": "sportsbet",
+          "odds": 1.87,
+          "book": "pointsbetau",
           "modelProb": 0.5205,
-          "ev": -0.0319,
+          "ev": -0.0267,
           "suspect": false
         },
         {
@@ -19233,10 +19233,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 10.5,
-          "odds": 1.9,
-          "book": "pointsbetau",
+          "odds": 1.91,
+          "book": "sportsbet",
           "modelProb": 0.617,
-          "ev": 0.1723,
+          "ev": 0.1785,
           "suspect": false
         },
         {
@@ -19247,10 +19247,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 10.5,
-          "odds": 1.86,
-          "book": "sportsbet",
+          "odds": 1.87,
+          "book": "pointsbetau",
           "modelProb": 0.383,
-          "ev": -0.2876,
+          "ev": -0.2838,
           "suspect": false
         },
         {
@@ -19275,10 +19275,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 10.5,
-          "odds": 1.92,
+          "odds": 1.91,
           "book": "sportsbet",
           "modelProb": 0.5974,
-          "ev": 0.1471,
+          "ev": 0.1411,
           "suspect": false
         },
         {
@@ -19289,10 +19289,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 10.5,
-          "odds": 1.9,
+          "odds": 1.87,
           "book": "pointsbetau",
           "modelProb": 0.4026,
-          "ev": -0.2351,
+          "ev": -0.2472,
           "suspect": false
         },
         {
@@ -19359,10 +19359,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 10.5,
-          "odds": 1.92,
+          "odds": 1.91,
           "book": "sportsbet",
           "modelProb": 0.5833,
-          "ev": 0.12,
+          "ev": 0.1141,
           "suspect": false
         },
         {
@@ -19400,11 +19400,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Over",
-          "line": 9.5,
+          "line": 10.5,
           "odds": 1.87,
-          "book": "sportsbet",
-          "modelProb": 0.663,
-          "ev": 0.2398,
+          "book": "pointsbetau",
+          "modelProb": 0.562,
+          "ev": 0.051,
           "suspect": false
         },
         {
@@ -19414,11 +19414,11 @@
           "match": "Fremantle v Brisbane Lions",
           "statKey": "disposals",
           "direction": "Under",
-          "line": 9.5,
+          "line": 10.5,
           "odds": 1.87,
           "book": "pointsbetau",
-          "modelProb": 0.337,
-          "ev": -0.3698,
+          "modelProb": 0.438,
+          "ev": -0.181,
           "suspect": false
         },
         {
@@ -19443,10 +19443,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 10.5,
-          "odds": 1.9,
-          "book": "pointsbetau",
+          "odds": 1.88,
+          "book": "sportsbet",
           "modelProb": 0.5864,
-          "ev": 0.1142,
+          "ev": 0.1025,
           "suspect": false
         },
         {
@@ -19457,10 +19457,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 10.5,
-          "odds": 1.93,
-          "book": "sportsbet",
+          "odds": 1.87,
+          "book": "pointsbetau",
           "modelProb": 0.4136,
-          "ev": -0.2018,
+          "ev": -0.2266,
           "suspect": false
         },
         {
@@ -19486,7 +19486,7 @@
           "direction": "Over",
           "line": 10.5,
           "odds": 1.87,
-          "book": "sportsbet",
+          "book": "pointsbetau",
           "modelProb": 0.474,
           "ev": -0.1137,
           "suspect": false
@@ -19499,10 +19499,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 10.5,
-          "odds": 1.9,
-          "book": "pointsbetau",
+          "odds": 1.91,
+          "book": "sportsbet",
           "modelProb": 0.526,
-          "ev": -0.0006,
+          "ev": 0.0047,
           "suspect": false
         },
         {
@@ -19527,10 +19527,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 8.5,
-          "odds": 1.9,
+          "odds": 1.87,
           "book": "pointsbetau",
           "modelProb": 0.7078,
-          "ev": 0.3448,
+          "ev": 0.3236,
           "suspect": false
         },
         {
@@ -19541,10 +19541,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 8.5,
-          "odds": 1.89,
+          "odds": 1.88,
           "book": "sportsbet",
           "modelProb": 0.2922,
-          "ev": -0.4477,
+          "ev": -0.4506,
           "suspect": false
         },
         {
@@ -19584,7 +19584,7 @@
           "direction": "Over",
           "line": 8.5,
           "odds": 1.87,
-          "book": "pointsbetau",
+          "book": "sportsbet",
           "modelProb": 0.6468,
           "ev": 0.2095,
           "suspect": false
@@ -19598,7 +19598,7 @@
           "direction": "Under",
           "line": 8.5,
           "odds": 1.87,
-          "book": "sportsbet",
+          "book": "pointsbetau",
           "modelProb": 0.3532,
           "ev": -0.3395,
           "suspect": false
@@ -19625,10 +19625,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 8.5,
-          "odds": 1.91,
+          "odds": 1.92,
           "book": "sportsbet",
           "modelProb": 0.5824,
-          "ev": 0.1124,
+          "ev": 0.1183,
           "suspect": false
         },
         {
@@ -19681,10 +19681,10 @@
           "statKey": "disposals",
           "direction": "Over",
           "line": 8.5,
-          "odds": 1.83,
+          "odds": 1.87,
           "book": "pointsbetau",
           "modelProb": 0.5235,
-          "ev": -0.0419,
+          "ev": -0.021,
           "suspect": false
         },
         {
@@ -19695,10 +19695,10 @@
           "statKey": "disposals",
           "direction": "Under",
           "line": 8.5,
-          "odds": 1.9,
+          "odds": 1.87,
           "book": "pointsbetau",
           "modelProb": 0.4765,
-          "ev": -0.0947,
+          "ev": -0.109,
           "suspect": false
         },
         {
