@@ -18145,7 +18145,7 @@
       "year": 2026,
       "round": 29,
       "capturedAt": "2026-09-25T07:36:54.326Z",
-      "settled": false,
+      "settled": true,
       "markets": [
         {
           "playerId": "CD_I1023517",
@@ -18159,7 +18159,9 @@
           "book": "sportsbet",
           "modelProb": 0.5267,
           "ev": -0.015,
-          "suspect": false
+          "suspect": false,
+          "actual": 31,
+          "result": 1
         },
         {
           "playerId": "CD_I1023517",
@@ -18173,7 +18175,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4733,
           "ev": -0.0534,
-          "suspect": false
+          "suspect": false,
+          "actual": 31,
+          "result": 0
         },
         {
           "playerId": "CD_I1023517",
@@ -18187,7 +18191,9 @@
           "book": "neds",
           "modelProb": 0.5229,
           "ev": 0.2549,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         },
         {
           "playerId": "CD_I293535",
@@ -18201,7 +18207,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5693,
           "ev": 0.0645,
-          "suspect": false
+          "suspect": false,
+          "actual": 20,
+          "result": 0
         },
         {
           "playerId": "CD_I293535",
@@ -18215,7 +18223,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4307,
           "ev": -0.1945,
-          "suspect": false
+          "suspect": false,
+          "actual": 20,
+          "result": 1
         },
         {
           "playerId": "CD_I1002232",
@@ -18229,7 +18239,9 @@
           "book": "sportsbet",
           "modelProb": 0.574,
           "ev": 0.0733,
-          "suspect": false
+          "suspect": false,
+          "actual": 16,
+          "result": 0
         },
         {
           "playerId": "CD_I1002232",
@@ -18243,7 +18255,9 @@
           "book": "neds",
           "modelProb": 0.426,
           "ev": -0.1692,
-          "suspect": false
+          "suspect": false,
+          "actual": 16,
+          "result": 1
         },
         {
           "playerId": "CD_I1002232",
@@ -18257,7 +18271,9 @@
           "book": "neds",
           "modelProb": 0.2666,
           "ev": -0.0671,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         },
         {
           "playerId": "CD_I261224",
@@ -18271,7 +18287,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5012,
           "ev": -0.0477,
-          "suspect": false
+          "suspect": false,
+          "actual": 28,
+          "result": 1
         },
         {
           "playerId": "CD_I261224",
@@ -18285,7 +18303,9 @@
           "book": "neds",
           "modelProb": 0.4988,
           "ev": -0.0473,
-          "suspect": false
+          "suspect": false,
+          "actual": 28,
+          "result": 0
         },
         {
           "playerId": "CD_I1009420",
@@ -18299,7 +18319,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5636,
           "ev": 0.0539,
-          "suspect": false
+          "suspect": false,
+          "actual": 24,
+          "result": 1
         },
         {
           "playerId": "CD_I1009420",
@@ -18313,7 +18335,9 @@
           "book": "neds",
           "modelProb": 0.4364,
           "ev": -0.1665,
-          "suspect": false
+          "suspect": false,
+          "actual": 24,
+          "result": 0
         },
         {
           "playerId": "CD_I1009420",
@@ -18327,7 +18351,9 @@
           "book": "neds",
           "modelProb": 0.3687,
           "ev": 0.2905,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         },
         {
           "playerId": "CD_I1006152",
@@ -18341,7 +18367,9 @@
           "book": "pointsbetau",
           "modelProb": 0.6474,
           "ev": 0.2107,
-          "suspect": false
+          "suspect": false,
+          "actual": 14,
+          "result": 0
         },
         {
           "playerId": "CD_I1006152",
@@ -18355,7 +18383,9 @@
           "book": "pointsbetau",
           "modelProb": 0.3526,
           "ev": -0.3407,
-          "suspect": false
+          "suspect": false,
+          "actual": 14,
+          "result": 1
         },
         {
           "playerId": "CD_I1028513",
@@ -18369,7 +18399,9 @@
           "book": "pointsbetau",
           "modelProb": 0.7289,
           "ev": 0.363,
-          "suspect": false
+          "suspect": false,
+          "actual": 21,
+          "result": 1
         },
         {
           "playerId": "CD_I1028513",
@@ -18383,7 +18415,9 @@
           "book": "neds",
           "modelProb": 0.2711,
           "ev": -0.4821,
-          "suspect": false
+          "suspect": false,
+          "actual": 21,
+          "result": 0
         },
         {
           "playerId": "CD_I1028513",
@@ -18397,7 +18431,9 @@
           "book": "neds",
           "modelProb": 0.3093,
           "ev": -0.1186,
-          "suspect": false
+          "suspect": false,
+          "actual": 1,
+          "result": 1
         },
         {
           "playerId": "CD_I1002312",
@@ -18411,7 +18447,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5452,
           "ev": 0.0194,
-          "suspect": false
+          "suspect": false,
+          "actual": 20,
+          "result": 0
         },
         {
           "playerId": "CD_I1002312",
@@ -18425,7 +18463,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4548,
           "ev": -0.1494,
-          "suspect": false
+          "suspect": false,
+          "actual": 20,
+          "result": 1
         },
         {
           "playerId": "CD_I1002312",
@@ -18439,7 +18479,9 @@
           "book": "tab",
           "modelProb": 0.7018,
           "ev": -0.0175,
-          "suspect": false
+          "suspect": false,
+          "actual": 1,
+          "result": 1
         },
         {
           "playerId": "CD_I993834",
@@ -18453,7 +18495,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4418,
           "ev": -0.1738,
-          "suspect": false
+          "suspect": false,
+          "actual": 21,
+          "result": 0
         },
         {
           "playerId": "CD_I993834",
@@ -18467,7 +18511,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5582,
           "ev": 0.0438,
-          "suspect": false
+          "suspect": false,
+          "actual": 21,
+          "result": 1
         },
         {
           "playerId": "CD_I993993",
@@ -18481,7 +18527,9 @@
           "book": "sportsbet",
           "modelProb": 0.6019,
           "ev": 0.1256,
-          "suspect": false
+          "suspect": false,
+          "actual": 26,
+          "result": 1
         },
         {
           "playerId": "CD_I993993",
@@ -18495,7 +18543,9 @@
           "book": "neds",
           "modelProb": 0.3981,
           "ev": -0.2277,
-          "suspect": false
+          "suspect": false,
+          "actual": 26,
+          "result": 0
         },
         {
           "playerId": "CD_I993993",
@@ -18509,7 +18559,9 @@
           "book": "neds",
           "modelProb": 0.6465,
           "ev": -0.0625,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         },
         {
           "playerId": "CD_I1009256",
@@ -18523,7 +18575,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4415,
           "ev": -0.1744,
-          "suspect": false
+          "suspect": false,
+          "actual": 22,
+          "result": 1
         },
         {
           "playerId": "CD_I1009256",
@@ -18537,7 +18591,9 @@
           "book": "neds",
           "modelProb": 0.5585,
           "ev": 0.0612,
-          "suspect": false
+          "suspect": false,
+          "actual": 22,
+          "result": 0
         },
         {
           "playerId": "CD_I1009256",
@@ -18551,7 +18607,9 @@
           "book": "tab",
           "modelProb": 0.4055,
           "ev": -0.0674,
-          "suspect": false
+          "suspect": false,
+          "actual": 2,
+          "result": 1
         },
         {
           "playerId": "CD_I998659",
@@ -18565,7 +18623,9 @@
           "book": "pointsbetau",
           "modelProb": 0.6165,
           "ev": 0.1529,
-          "suspect": false
+          "suspect": false,
+          "actual": 13,
+          "result": 0
         },
         {
           "playerId": "CD_I998659",
@@ -18579,7 +18639,9 @@
           "book": "neds",
           "modelProb": 0.3835,
           "ev": -0.2714,
-          "suspect": false
+          "suspect": false,
+          "actual": 13,
+          "result": 1
         },
         {
           "playerId": "CD_I1017067",
@@ -18593,7 +18655,9 @@
           "book": "pointsbetau",
           "modelProb": 0.6773,
           "ev": 0.2665,
-          "suspect": false
+          "suspect": false,
+          "actual": 20,
+          "result": 1
         },
         {
           "playerId": "CD_I1017067",
@@ -18607,7 +18671,9 @@
           "book": "neds",
           "modelProb": 0.3227,
           "ev": -0.3868,
-          "suspect": false
+          "suspect": false,
+          "actual": 20,
+          "result": 0
         },
         {
           "playerId": "CD_I1023708",
@@ -18621,7 +18687,9 @@
           "book": "pointsbetau",
           "modelProb": 0.7048,
           "ev": 0.318,
-          "suspect": false
+          "suspect": false,
+          "actual": 20,
+          "result": 1
         },
         {
           "playerId": "CD_I1023708",
@@ -18635,7 +18703,9 @@
           "book": "neds",
           "modelProb": 0.2952,
           "ev": -0.4332,
-          "suspect": false
+          "suspect": false,
+          "actual": 20,
+          "result": 0
         },
         {
           "playerId": "CD_I1028560",
@@ -18649,7 +18719,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5195,
           "ev": -0.0285,
-          "suspect": false
+          "suspect": false,
+          "actual": 19,
+          "result": 1
         },
         {
           "playerId": "CD_I1028560",
@@ -18663,7 +18735,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4805,
           "ev": -0.1015,
-          "suspect": false
+          "suspect": false,
+          "actual": 19,
+          "result": 0
         },
         {
           "playerId": "CD_I1028560",
@@ -18677,7 +18751,9 @@
           "book": "neds",
           "modelProb": 0.4674,
           "ev": 0.0283,
-          "suspect": false
+          "suspect": false,
+          "actual": 1,
+          "result": 1
         },
         {
           "playerId": "CD_I1021015",
@@ -18691,7 +18767,9 @@
           "book": "pointsbetau",
           "modelProb": 0.6556,
           "ev": 0.2259,
-          "suspect": false
+          "suspect": false,
+          "actual": 16,
+          "result": 0
         },
         {
           "playerId": "CD_I1021015",
@@ -18705,7 +18783,9 @@
           "book": "neds",
           "modelProb": 0.3444,
           "ev": -0.3387,
-          "suspect": false
+          "suspect": false,
+          "actual": 16,
+          "result": 1
         },
         {
           "playerId": "CD_I1000978",
@@ -18719,7 +18799,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4292,
           "ev": -0.1845,
-          "suspect": false
+          "suspect": false,
+          "actual": 18,
+          "result": 0
         },
         {
           "playerId": "CD_I1000978",
@@ -18733,7 +18815,9 @@
           "book": "neds",
           "modelProb": 0.5708,
           "ev": 0.0902,
-          "suspect": false
+          "suspect": false,
+          "actual": 18,
+          "result": 1
         },
         {
           "playerId": "CD_I1000978",
@@ -18747,7 +18831,9 @@
           "book": "neds",
           "modelProb": 0.6209,
           "ev": 0.1797,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         },
         {
           "playerId": "CD_I1009399",
@@ -18761,7 +18847,9 @@
           "book": "pointsbetau",
           "modelProb": 0.6852,
           "ev": 0.3361,
-          "suspect": false
+          "suspect": false,
+          "actual": 15,
+          "result": 0
         },
         {
           "playerId": "CD_I1009399",
@@ -18775,7 +18863,9 @@
           "book": "neds",
           "modelProb": 0.3148,
           "ev": -0.3955,
-          "suspect": false
+          "suspect": false,
+          "actual": 15,
+          "result": 1
         },
         {
           "playerId": "CD_I1009399",
@@ -18789,7 +18879,9 @@
           "book": "tab",
           "modelProb": 0.7018,
           "ev": -0.0666,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         },
         {
           "playerId": "CD_I998133",
@@ -18803,7 +18895,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4794,
           "ev": -0.0412,
-          "suspect": false
+          "suspect": false,
+          "actual": 17,
+          "result": 0
         },
         {
           "playerId": "CD_I998133",
@@ -18817,7 +18911,9 @@
           "book": "neds",
           "modelProb": 0.5206,
           "ev": -0.0057,
-          "suspect": false
+          "suspect": false,
+          "actual": 17,
+          "result": 1
         },
         {
           "playerId": "CD_I1016825",
@@ -18831,7 +18927,9 @@
           "book": "sportsbet",
           "modelProb": 0.623,
           "ev": 0.1649,
-          "suspect": false
+          "suspect": false,
+          "actual": 16,
+          "result": 0
         },
         {
           "playerId": "CD_I1016825",
@@ -18845,7 +18943,9 @@
           "book": "neds",
           "modelProb": 0.377,
           "ev": -0.2761,
-          "suspect": false
+          "suspect": false,
+          "actual": 16,
+          "result": 1
         },
         {
           "playerId": "CD_I1020250",
@@ -18859,7 +18959,9 @@
           "book": "neds",
           "modelProb": 0.6068,
           "ev": 0.1348,
-          "suspect": false
+          "suspect": false,
+          "actual": 11,
+          "result": 0
         },
         {
           "playerId": "CD_I1020250",
@@ -18873,7 +18975,9 @@
           "book": "pointsbetau",
           "modelProb": 0.3932,
           "ev": -0.253,
-          "suspect": false
+          "suspect": false,
+          "actual": 11,
+          "result": 1
         },
         {
           "playerId": "CD_I1020250",
@@ -18887,7 +18991,9 @@
           "book": "neds",
           "modelProb": 0.2592,
           "ev": 0.1015,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         },
         {
           "playerId": "CD_I993940",
@@ -18901,7 +19007,9 @@
           "book": "pointsbetau",
           "modelProb": 0.7235,
           "ev": 0.3529,
-          "suspect": false
+          "suspect": false,
+          "actual": 11,
+          "result": 0
         },
         {
           "playerId": "CD_I993940",
@@ -18915,7 +19023,9 @@
           "book": "neds",
           "modelProb": 0.2765,
           "ev": -0.4746,
-          "suspect": false
+          "suspect": false,
+          "actual": 11,
+          "result": 1
         },
         {
           "playerId": "CD_I1002235",
@@ -18929,7 +19039,9 @@
           "book": "sportsbet",
           "modelProb": 0.6604,
           "ev": 0.2482,
-          "suspect": false
+          "suspect": false,
+          "actual": 18,
+          "result": 1
         },
         {
           "playerId": "CD_I1002235",
@@ -18943,7 +19055,9 @@
           "book": "neds",
           "modelProb": 0.3396,
           "ev": -0.3548,
-          "suspect": false
+          "suspect": false,
+          "actual": 18,
+          "result": 0
         },
         {
           "playerId": "CD_I1002235",
@@ -18957,7 +19071,9 @@
           "book": "tab",
           "modelProb": 0.6209,
           "ev": -0.0686,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         },
         {
           "playerId": "CD_I291548",
@@ -18971,7 +19087,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5167,
           "ev": 0.0075,
-          "suspect": false
+          "suspect": false,
+          "actual": 15,
+          "result": 0
         },
         {
           "playerId": "CD_I291548",
@@ -18985,7 +19103,9 @@
           "book": "neds",
           "modelProb": 0.4833,
           "ev": -0.0816,
-          "suspect": false
+          "suspect": false,
+          "actual": 15,
+          "result": 1
         },
         {
           "playerId": "CD_I1013224",
@@ -18999,7 +19119,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4821,
           "ev": -0.0599,
-          "suspect": false
+          "suspect": false,
+          "actual": 10,
+          "result": 0
         },
         {
           "playerId": "CD_I1013224",
@@ -19013,7 +19135,9 @@
           "book": "neds",
           "modelProb": 0.5179,
           "ev": -0.016,
-          "suspect": false
+          "suspect": false,
+          "actual": 10,
+          "result": 1
         },
         {
           "playerId": "CD_I1017703",
@@ -19027,7 +19151,9 @@
           "book": "pointsbetau",
           "modelProb": 0.6276,
           "ev": 0.1735,
-          "suspect": false
+          "suspect": false,
+          "actual": 10,
+          "result": 0
         },
         {
           "playerId": "CD_I1017703",
@@ -19041,7 +19167,9 @@
           "book": "neds",
           "modelProb": 0.3724,
           "ev": -0.2924,
-          "suspect": false
+          "suspect": false,
+          "actual": 10,
+          "result": 1
         },
         {
           "playerId": "CD_I996059",
@@ -19055,7 +19183,9 @@
           "book": "pointsbetau",
           "modelProb": 0.6583,
           "ev": 0.2311,
-          "suspect": false
+          "suspect": false,
+          "actual": 11,
+          "result": 0
         },
         {
           "playerId": "CD_I996059",
@@ -19069,7 +19199,9 @@
           "book": "neds",
           "modelProb": 0.3417,
           "ev": -0.344,
-          "suspect": false
+          "suspect": false,
+          "actual": 11,
+          "result": 1
         },
         {
           "playerId": "CD_I1014026",
@@ -19083,7 +19215,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5779,
           "ev": 0.0806,
-          "suspect": false
+          "suspect": false,
+          "actual": 14,
+          "result": 1
         },
         {
           "playerId": "CD_I1014026",
@@ -19097,7 +19231,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4221,
           "ev": -0.2106,
-          "suspect": false
+          "suspect": false,
+          "actual": 14,
+          "result": 0
         },
         {
           "playerId": "CD_I1014026",
@@ -19111,7 +19247,9 @@
           "book": "tab",
           "modelProb": 0.8858,
           "ev": 0.001,
-          "suspect": false
+          "suspect": false,
+          "actual": 2,
+          "result": 1
         },
         {
           "playerId": "CD_I992472",
@@ -19125,7 +19263,9 @@
           "book": "pointsbetau",
           "modelProb": 0.6869,
           "ev": 0.2845,
-          "suspect": false
+          "suspect": false,
+          "actual": 13,
+          "result": 1
         },
         {
           "playerId": "CD_I992472",
@@ -19139,7 +19279,9 @@
           "book": "sportsbet",
           "modelProb": 0.3131,
           "ev": -0.4113,
-          "suspect": false
+          "suspect": false,
+          "actual": 13,
+          "result": 0
         },
         {
           "playerId": "CD_I997846",
@@ -19153,7 +19295,9 @@
           "book": "sportsbet",
           "modelProb": 0.5228,
           "ev": -0.0068,
-          "suspect": false
+          "suspect": false,
+          "actual": 10,
+          "result": 0
         },
         {
           "playerId": "CD_I997846",
@@ -19167,7 +19311,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4772,
           "ev": -0.1075,
-          "suspect": false
+          "suspect": false,
+          "actual": 10,
+          "result": 1
         },
         {
           "playerId": "CD_I997846",
@@ -19181,7 +19327,9 @@
           "book": "neds",
           "modelProb": 0.6865,
           "ev": 0.3044,
-          "suspect": false
+          "suspect": false,
+          "actual": 1,
+          "result": 1
         },
         {
           "playerId": "CD_I992059",
@@ -19195,7 +19343,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5205,
           "ev": -0.0267,
-          "suspect": false
+          "suspect": false,
+          "actual": 16,
+          "result": 1
         },
         {
           "playerId": "CD_I992059",
@@ -19209,7 +19359,9 @@
           "book": "neds",
           "modelProb": 0.4795,
           "ev": -0.0793,
-          "suspect": false
+          "suspect": false,
+          "actual": 16,
+          "result": 0
         },
         {
           "playerId": "CD_I992059",
@@ -19223,7 +19375,9 @@
           "book": "neds",
           "modelProb": 0.3624,
           "ev": -0.0397,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         },
         {
           "playerId": "CD_I990609",
@@ -19237,7 +19391,9 @@
           "book": "sportsbet",
           "modelProb": 0.617,
           "ev": 0.1785,
-          "suspect": false
+          "suspect": false,
+          "actual": 16,
+          "result": 1
         },
         {
           "playerId": "CD_I990609",
@@ -19251,7 +19407,9 @@
           "book": "pointsbetau",
           "modelProb": 0.383,
           "ev": -0.2838,
-          "suspect": false
+          "suspect": false,
+          "actual": 16,
+          "result": 0
         },
         {
           "playerId": "CD_I990609",
@@ -19265,7 +19423,9 @@
           "book": "neds",
           "modelProb": 0.9017,
           "ev": -0.0081,
-          "suspect": false
+          "suspect": false,
+          "actual": 3,
+          "result": 1
         },
         {
           "playerId": "CD_I999321",
@@ -19279,7 +19439,9 @@
           "book": "sportsbet",
           "modelProb": 0.5974,
           "ev": 0.1411,
-          "suspect": false
+          "suspect": false,
+          "actual": 9,
+          "result": 0
         },
         {
           "playerId": "CD_I999321",
@@ -19293,7 +19455,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4026,
           "ev": -0.2472,
-          "suspect": false
+          "suspect": false,
+          "actual": 9,
+          "result": 1
         },
         {
           "playerId": "CD_I999321",
@@ -19307,7 +19471,9 @@
           "book": "tab",
           "modelProb": 0.6958,
           "ev": 0.0993,
-          "suspect": false
+          "suspect": false,
+          "actual": 1,
+          "result": 1
         },
         {
           "playerId": "CD_I1012819",
@@ -19321,7 +19487,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5926,
           "ev": 0.1081,
-          "suspect": false
+          "suspect": false,
+          "actual": 9,
+          "result": 0
         },
         {
           "playerId": "CD_I1012819",
@@ -19335,7 +19503,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4074,
           "ev": -0.2381,
-          "suspect": false
+          "suspect": false,
+          "actual": 9,
+          "result": 1
         },
         {
           "playerId": "CD_I1012819",
@@ -19349,7 +19519,9 @@
           "book": "tab",
           "modelProb": 0.8489,
           "ev": -0.0577,
-          "suspect": false
+          "suspect": false,
+          "actual": 1,
+          "result": 1
         },
         {
           "playerId": "CD_I1011558",
@@ -19363,7 +19535,9 @@
           "book": "sportsbet",
           "modelProb": 0.5833,
           "ev": 0.1141,
-          "suspect": false
+          "suspect": false,
+          "actual": 13,
+          "result": 1
         },
         {
           "playerId": "CD_I1011558",
@@ -19377,7 +19551,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4167,
           "ev": -0.2208,
-          "suspect": false
+          "suspect": false,
+          "actual": 13,
+          "result": 0
         },
         {
           "playerId": "CD_I1011558",
@@ -19391,7 +19567,9 @@
           "book": "tab",
           "modelProb": 0.7163,
           "ev": -0.0258,
-          "suspect": false
+          "suspect": false,
+          "actual": 2,
+          "result": 1
         },
         {
           "playerId": "CD_I1028019",
@@ -19405,7 +19583,9 @@
           "book": "pointsbetau",
           "modelProb": 0.562,
           "ev": 0.051,
-          "suspect": false
+          "suspect": false,
+          "actual": 10,
+          "result": 0
         },
         {
           "playerId": "CD_I1028019",
@@ -19419,7 +19599,9 @@
           "book": "pointsbetau",
           "modelProb": 0.438,
           "ev": -0.181,
-          "suspect": false
+          "suspect": false,
+          "actual": 10,
+          "result": 1
         },
         {
           "playerId": "CD_I1028019",
@@ -19433,7 +19615,9 @@
           "book": "tab",
           "modelProb": 0.9439,
           "ev": 0.0288,
-          "suspect": false
+          "suspect": false,
+          "actual": 3,
+          "result": 1
         },
         {
           "playerId": "CD_I993953",
@@ -19447,7 +19631,9 @@
           "book": "sportsbet",
           "modelProb": 0.5864,
           "ev": 0.1025,
-          "suspect": false
+          "suspect": false,
+          "actual": 6,
+          "result": 0
         },
         {
           "playerId": "CD_I993953",
@@ -19461,7 +19647,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4136,
           "ev": -0.2266,
-          "suspect": false
+          "suspect": false,
+          "actual": 6,
+          "result": 1
         },
         {
           "playerId": "CD_I993953",
@@ -19475,7 +19663,9 @@
           "book": "neds",
           "modelProb": 0.8191,
           "ev": 0.0485,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         },
         {
           "playerId": "CD_I1017754",
@@ -19489,7 +19679,9 @@
           "book": "pointsbetau",
           "modelProb": 0.474,
           "ev": -0.1137,
-          "suspect": false
+          "suspect": false,
+          "actual": 9,
+          "result": 0
         },
         {
           "playerId": "CD_I1017754",
@@ -19503,7 +19695,9 @@
           "book": "sportsbet",
           "modelProb": 0.526,
           "ev": 0.0047,
-          "suspect": false
+          "suspect": false,
+          "actual": 9,
+          "result": 1
         },
         {
           "playerId": "CD_I1017754",
@@ -19517,7 +19711,9 @@
           "book": "tab",
           "modelProb": 0.8412,
           "ev": -0.0158,
-          "suspect": false
+          "suspect": false,
+          "actual": 3,
+          "result": 1
         },
         {
           "playerId": "CD_I298211",
@@ -19531,7 +19727,9 @@
           "book": "pointsbetau",
           "modelProb": 0.7078,
           "ev": 0.3236,
-          "suspect": false
+          "suspect": false,
+          "actual": 8,
+          "result": 0
         },
         {
           "playerId": "CD_I298211",
@@ -19545,7 +19743,9 @@
           "book": "sportsbet",
           "modelProb": 0.2922,
           "ev": -0.4506,
-          "suspect": false
+          "suspect": false,
+          "actual": 8,
+          "result": 1
         },
         {
           "playerId": "CD_I1034411",
@@ -19559,7 +19759,9 @@
           "book": "pointsbetau",
           "modelProb": 0.6699,
           "ev": 0.2528,
-          "suspect": false
+          "suspect": false,
+          "actual": 9,
+          "result": 1
         },
         {
           "playerId": "CD_I1034411",
@@ -19573,7 +19775,9 @@
           "book": "pointsbetau",
           "modelProb": 0.3301,
           "ev": -0.3828,
-          "suspect": false
+          "suspect": false,
+          "actual": 9,
+          "result": 0
         },
         {
           "playerId": "CD_I1005577",
@@ -19587,7 +19791,9 @@
           "book": "sportsbet",
           "modelProb": 0.6468,
           "ev": 0.2095,
-          "suspect": false
+          "suspect": false,
+          "actual": 11,
+          "result": 1
         },
         {
           "playerId": "CD_I1005577",
@@ -19601,7 +19807,9 @@
           "book": "pointsbetau",
           "modelProb": 0.3532,
           "ev": -0.3395,
-          "suspect": false
+          "suspect": false,
+          "actual": 11,
+          "result": 0
         },
         {
           "playerId": "CD_I1005577",
@@ -19615,7 +19823,9 @@
           "book": "neds",
           "modelProb": 0.4566,
           "ev": 0.3928,
-          "suspect": false
+          "suspect": false,
+          "actual": 1,
+          "result": 1
         },
         {
           "playerId": "CD_I298409",
@@ -19629,7 +19839,9 @@
           "book": "sportsbet",
           "modelProb": 0.5824,
           "ev": 0.1183,
-          "suspect": false
+          "suspect": false,
+          "actual": 2,
+          "result": 0
         },
         {
           "playerId": "CD_I298409",
@@ -19643,7 +19855,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4176,
           "ev": -0.2066,
-          "suspect": false
+          "suspect": false,
+          "actual": 2,
+          "result": 1
         },
         {
           "playerId": "CD_I296269",
@@ -19657,7 +19871,9 @@
           "book": "pointsbetau",
           "modelProb": 0.6197,
           "ev": 0.1588,
-          "suspect": false
+          "suspect": false,
+          "actual": 7,
+          "result": 0
         },
         {
           "playerId": "CD_I296269",
@@ -19671,7 +19887,9 @@
           "book": "pointsbetau",
           "modelProb": 0.3803,
           "ev": -0.2888,
-          "suspect": false
+          "suspect": false,
+          "actual": 7,
+          "result": 1
         },
         {
           "playerId": "CD_I1020594",
@@ -19685,7 +19903,9 @@
           "book": "pointsbetau",
           "modelProb": 0.5235,
           "ev": -0.021,
-          "suspect": false
+          "suspect": false,
+          "actual": 10,
+          "result": 1
         },
         {
           "playerId": "CD_I1020594",
@@ -19699,7 +19919,9 @@
           "book": "pointsbetau",
           "modelProb": 0.4765,
           "ev": -0.109,
-          "suspect": false
+          "suspect": false,
+          "actual": 10,
+          "result": 0
         },
         {
           "playerId": "CD_I1020594",
@@ -19713,7 +19935,9 @@
           "book": "tab",
           "modelProb": 0.9187,
           "ev": 0.0106,
-          "suspect": false
+          "suspect": false,
+          "actual": 2,
+          "result": 1
         },
         {
           "playerId": "CD_I1004385",
@@ -19727,7 +19951,9 @@
           "book": "tab",
           "modelProb": 0.7981,
           "ev": 0.0375,
-          "suspect": false
+          "suspect": false,
+          "actual": 2,
+          "result": 1
         },
         {
           "playerId": "CD_I998647",
@@ -19741,9 +19967,12 @@
           "book": "tab",
           "modelProb": 0.343,
           "ev": -0.074,
-          "suspect": false
+          "suspect": false,
+          "actual": 0,
+          "result": 0
         }
-      ]
+      ],
+      "settledAt": "2026-10-01T13:47:37.489Z"
     }
   ]
 }
